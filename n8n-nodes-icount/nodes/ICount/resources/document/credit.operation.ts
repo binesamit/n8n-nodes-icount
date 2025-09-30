@@ -167,20 +167,24 @@ export async function executeCredit(this: any, index: number): Promise<any> {
         }
     }
 
+    // Use copy_doc to create credit note from original document
     const body: any = {
-        doctype: 'refund', // Credit note
         origin_doc_id: originDocId,
+        new_doctype: 'refund',
+        copy_lines: creditType === 'full',
         hwc: comments,
         send_email: sendEmail ? 1 : 0,
     };
 
+    // For partial credit, add specific items to credit
     if (creditType === 'partial' && items.length > 0) {
+        body.copy_lines = false;
         body.items = items;
     }
 
     const response = await this.helpers.requestWithAuthentication.call(this, 'iCountApi', {
         method: 'POST',
-        url: 'https://api.icount.co.il/api/v3.php/doc/create',
+        url: 'https://api.icount.co.il/api/v3.php/doc/copy_doc',
         body,
         json: true,
     });

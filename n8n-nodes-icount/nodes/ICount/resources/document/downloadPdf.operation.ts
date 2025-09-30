@@ -20,14 +20,14 @@ export const documentDownloadPdfDescription: INodeProperties[] = [
 export async function executeDownloadPdf(this: any, index: number): Promise<any> {
     const docId = this.getNodeParameter('doc_id', index) as string;
 
-    // First, get document info to get PDF link
+    // First, get document info to get PDF link - use doc/info instead of doc/get
     const getBody = {
         doc_id: docId,
     };
 
     const docResponse = await this.helpers.requestWithAuthentication.call(this, 'iCountApi', {
         method: 'POST',
-        url: 'https://api.icount.co.il/api/v3.php/doc/get',
+        url: 'https://api.icount.co.il/api/v3.php/doc/info',
         body: getBody,
         json: true,
     });

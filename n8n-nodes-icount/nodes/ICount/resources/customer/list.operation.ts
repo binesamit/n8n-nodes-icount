@@ -54,16 +54,18 @@ export async function executeList(this: any, index: number): Promise<any> {
         throw new Error(`iCount API Error: ${errorMsg}`);
     }
 
-    let customers = response.data || response || [];
-
-    // If not array, might be wrapped
-    if (!Array.isArray(customers) && customers.clients) {
-        customers = customers.clients;
-    }
+    // Try different response structures
+    let customers = response.data?.data || response.data || response.clients || response || [];
 
     // Ensure it's an array
     if (!Array.isArray(customers)) {
         customers = [];
+    }
+
+    // If still empty, check if we need to return the response as-is for debugging
+    if (customers.length === 0 && response) {
+        // Return the full response for debugging
+        return [{ json: { debug: 'No customers found', response: response } }];
     }
 
     // Limit results if needed
