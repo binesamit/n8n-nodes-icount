@@ -66,16 +66,12 @@ export const documentCancelDescription: INodeProperties[] = [
 ];
 
 export async function executeCancel(this: any, index: number): Promise<any> {
-	const credentials = await this.getCredentials('iCountApi');
 	const doctype = this.getNodeParameter('doctype', index) as string;
 	const docnum = this.getNodeParameter('docnum', index) as number;
 	const refundCc = this.getNodeParameter('refund_cc', index, false) as boolean;
 	const reason = this.getNodeParameter('reason', index, '') as string;
 
 	const body: any = {
-		cid: credentials.cid,
-		user: credentials.user,
-		pass: credentials.pass,
 		doctype,
 		docnum,
 		refund_cc: refundCc,
@@ -85,7 +81,7 @@ export async function executeCancel(this: any, index: number): Promise<any> {
 		body.reason = reason;
 	}
 
-	const response = await this.helpers.request({
+	const response = await this.helpers.requestWithAuthentication.call(this, 'iCountApi', {
 		method: 'POST',
 		url: 'https://api.icount.co.il/api/v3.php/doc/cancel',
 		body,

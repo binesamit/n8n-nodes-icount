@@ -9,7 +9,8 @@
       "Bash(mkdir:*)",
       "Bash(npm run build:*)",
       "Bash(npm version:*)",
-      "Bash(npm publish:*)"
+      "Bash(npm publish:*)",
+      "Bash(dir:*)"
     ],
     "deny": [],
     "ask": []

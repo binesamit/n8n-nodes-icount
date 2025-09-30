@@ -53,15 +53,11 @@ export const documentCloseDescription: INodeProperties[] = [
 ];
 
 export async function executeClose(this: any, index: number): Promise<any> {
-	const credentials = await this.getCredentials('iCountApi');
 	const doctype = this.getNodeParameter('doctype', index) as string;
 	const docnum = this.getNodeParameter('docnum', index) as number;
 	const basedOnStr = this.getNodeParameter('based_on', index, '') as string;
 
 	const body: any = {
-		cid: credentials.cid,
-		user: credentials.user,
-		pass: credentials.pass,
 		doctype,
 		docnum,
 	};
@@ -74,7 +70,7 @@ export async function executeClose(this: any, index: number): Promise<any> {
 		}
 	}
 
-	const response = await this.helpers.request({
+	const response = await this.helpers.requestWithAuthentication.call(this, 'iCountApi', {
 		method: 'POST',
 		url: 'https://api.icount.co.il/api/v3.php/doc/close',
 		body,

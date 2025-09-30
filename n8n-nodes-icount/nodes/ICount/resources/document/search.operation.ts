@@ -200,15 +200,11 @@ export const documentSearchDescription: INodeProperties[] = [
 ];
 
 export async function executeSearch(this: any, index: number): Promise<any> {
-	const credentials = await this.getCredentials('iCountApi');
 	const returnAll = this.getNodeParameter('returnAll', index) as boolean;
 	const detailLevel = this.getNodeParameter('detail_level', index, 1) as number;
 	const filters = this.getNodeParameter('filters', index, {}) as any;
 
 	const body: any = {
-		cid: credentials.cid,
-		user: credentials.user,
-		pass: credentials.pass,
 		detail_level: detailLevel,
 		...filters,
 	};
@@ -219,7 +215,7 @@ export async function executeSearch(this: any, index: number): Promise<any> {
 		body.max_results = 1000;
 	}
 
-	const response = await this.helpers.request({
+	const response = await this.helpers.requestWithAuthentication.call(this, 'iCountApi', {
 		method: 'POST',
 		url: 'https://api.icount.co.il/api/v3.php/doc/search',
 		body,

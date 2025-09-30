@@ -61,8 +61,13 @@ export async function executeList(this: any, index: number): Promise<any> {
         customers = customers.clients;
     }
 
+    // Ensure it's an array
+    if (!Array.isArray(customers)) {
+        customers = [];
+    }
+
     // Limit results if needed
-    if (!returnAll && Array.isArray(customers)) {
+    if (!returnAll) {
         customers = customers.slice(0, limit);
     }
 

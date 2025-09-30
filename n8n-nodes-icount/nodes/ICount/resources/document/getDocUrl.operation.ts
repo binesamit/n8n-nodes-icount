@@ -113,7 +113,6 @@ export const documentGetDocUrlDescription: INodeProperties[] = [
 ];
 
 export async function executeGetDocUrl(this: any, index: number): Promise<any> {
-	const credentials = await this.getCredentials('iCountApi');
 	const doctype = this.getNodeParameter('doctype', index) as string;
 	const docnum = this.getNodeParameter('docnum', index) as number;
 	const lang = this.getNodeParameter('lang', index) as string;
@@ -123,9 +122,6 @@ export async function executeGetDocUrl(this: any, index: number): Promise<any> {
 	const emailTo = this.getNodeParameter('email_to', index, '') as string;
 
 	const body: any = {
-		cid: credentials.cid,
-		user: credentials.user,
-		pass: credentials.pass,
 		doctype,
 		docnum,
 		lang,
@@ -141,7 +137,7 @@ export async function executeGetDocUrl(this: any, index: number): Promise<any> {
 		body.email_to = emailTo;
 	}
 
-	const response = await this.helpers.request({
+	const response = await this.helpers.requestWithAuthentication.call(this, 'iCountApi', {
 		method: 'POST',
 		url: 'https://api.icount.co.il/api/v3.php/doc/get_doc_url',
 		body,

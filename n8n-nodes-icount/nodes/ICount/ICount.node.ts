@@ -55,10 +55,6 @@ import {
     executeSearch,
 } from './resources/document/search.operation';
 
-import {
-    documentInfoDescription,
-    executeInfo,
-} from './resources/document/info.operation';
 
 import {
     customerUpsertDescription,
@@ -171,12 +167,6 @@ export class ICount implements INodeType {
                         action: 'Get a document',
                     },
                     {
-                        name: 'Info',
-                        value: 'info',
-                        description: 'מידע מפורט על מסמך',
-                        action: 'Get document info',
-                    },
-                    {
                         name: 'Search',
                         value: 'search',
                         description: 'חיפוש מסמכים',
@@ -251,7 +241,6 @@ export class ICount implements INodeType {
             ...documentCancelDescription,
             ...documentCloseDescription,
             ...documentGetDescription,
-            ...documentInfoDescription,
             ...documentSearchDescription,
             ...documentListDescription,
             ...documentGetDocUrlDescription,
@@ -292,9 +281,6 @@ export class ICount implements INodeType {
                             break;
                         case 'get':
                             result = await executeGet.call(this, i);
-                            break;
-                        case 'info':
-                            result = await executeInfo.call(this, i);
                             break;
                         case 'search':
                             const searchResults = await executeSearch.call(this, i);

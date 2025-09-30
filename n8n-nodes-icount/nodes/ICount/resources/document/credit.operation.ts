@@ -34,6 +34,24 @@ export const documentCreditDescription: INodeProperties[] = [
         description: 'סוג הזיכוי',
     },
     {
+        displayName: 'Items Input Type',
+        name: 'items_input_type',
+        type: 'options',
+        displayOptions: {
+            show: {
+                resource: ['document'],
+                operation: ['credit'],
+                credit_type: ['partial'],
+            },
+        },
+        options: [
+            { name: 'Manual', value: 'manual' },
+            { name: 'JSON', value: 'json' },
+        ],
+        default: 'manual',
+        description: 'איך להזין את הפריטים',
+    },
+    {
         displayName: 'Items to Credit',
         name: 'items',
         type: 'fixedCollection',
@@ -45,6 +63,7 @@ export const documentCreditDescription: INodeProperties[] = [
                 resource: ['document'],
                 operation: ['credit'],
                 credit_type: ['partial'],
+                items_input_type: ['manual'],
             },
         },
         default: {},
@@ -81,6 +100,22 @@ export const documentCreditDescription: INodeProperties[] = [
         ],
     },
     {
+        displayName: 'Items JSON',
+        name: 'items_json',
+        type: 'json',
+        displayOptions: {
+            show: {
+                resource: ['document'],
+                operation: ['credit'],
+                credit_type: ['partial'],
+                items_input_type: ['json'],
+            },
+        },
+        default: '[]',
+        description: 'פריטים לזיכוי בפורמט JSON (מערך של אובייקטים עם description, quantity, unit_price)',
+        placeholder: '[{"description": "Item 1", "quantity": 1, "unit_price": 100}]',
+    },
+    {
         displayName: 'Reason',
         name: 'comments',
         type: 'string',
@@ -110,7 +145,6 @@ export const documentCreditDescription: INodeProperties[] = [
 ];
 
 export async function executeCredit(this: any, index: number): Promise<any> {
-    const credentials = await this.getCredentials('iCountApi');
     const originDocId = this.getNodeParameter('origin_doc_id', index) as string;
     const creditType = this.getNodeParameter('credit_type', index) as string;
     const comments = this.getNodeParameter('comments', index, '') as string;
@@ -118,14 +152,22 @@ export async function executeCredit(this: any, index: number): Promise<any> {
 
     let items = [];
     if (creditType === 'partial') {
-        const itemsData = this.getNodeParameter('items', index, {}) as any;
-        items = itemsData.item || [];
+        const itemsInputType = this.getNodeParameter('items_input_type', index, 'manual') as string;
+
+        if (itemsInputType === 'json') {
+            const itemsJson = this.getNodeParameter('items_json', index, '[]') as string;
+            try {
+                items = JSON.parse(itemsJson);
+            } catch (error) {
+                throw new Error('Invalid JSON format for items');
+            }
+        } else {
+            const itemsData = this.getNodeParameter('items', index, {}) as any;
+            items = itemsData.item || [];
+        }
     }
 
     const body: any = {
-        cid: credentials.cid,
-        user: credentials.user,
-        pass: credentials.pass,
         doctype: 'refund', // Credit note
         origin_doc_id: originDocId,
         hwc: comments,
@@ -136,7 +178,7 @@ export async function executeCredit(this: any, index: number): Promise<any> {
         body.items = items;
     }
 
-    const response = await this.helpers.request({
+    const response = await this.helpers.requestWithAuthentication.call(this, 'iCountApi', {
         method: 'POST',
         url: 'https://api.icount.co.il/api/v3.php/doc/create',
         body,
