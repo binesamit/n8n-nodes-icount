@@ -569,9 +569,57 @@ export async function executeUpsert(this: any, index: number): Promise<any> {
     if (paymentTerms) customerData.payment_terms = paymentTerms;
     if (clientTypeDiscount) customerData.client_type_discount = clientTypeDiscount;
 
-    // Use create_or_update endpoint - it handles both create and update automatically
+    // Try to find existing customer by HP or email to get client_id
+    let existingClientId = null;
+
+    // Search by HP first if provided
+    if (idNumber) {
+        try {
+            const searchResponse = await this.helpers.request({
+                method: 'POST',
+                url: 'https://api.icount.co.il/api/v3.php/client/find',
+                headers: {
+                    'Authorization': `Bearer ${credentials.token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: { hp: idNumber },
+                json: true,
+            });
+
+            if (searchResponse?.status && searchResponse?.data?.client_id) {
+                existingClientId = searchResponse.data.client_id;
+            }
+        } catch (error) {
+            // Not found by HP, continue
+        }
+    }
+
+    // If not found by HP, try email
+    if (!existingClientId && email) {
+        try {
+            const searchResponse = await this.helpers.request({
+                method: 'POST',
+                url: 'https://api.icount.co.il/api/v3.php/client/find',
+                headers: {
+                    'Authorization': `Bearer ${credentials.token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: { email: email },
+                json: true,
+            });
+
+            if (searchResponse?.status && searchResponse?.data?.client_id) {
+                existingClientId = searchResponse.data.client_id;
+            }
+        } catch (error) {
+            // Not found by email either, will create new
+        }
+    }
+
+    // Use create_or_update endpoint with client_id if found
     const body = {
         ...customerData,
+        ...(existingClientId ? { client_id: existingClientId } : {}),
     };
 
     let response;
