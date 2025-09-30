@@ -22,16 +22,15 @@ export async function executeGet(this: any, index: number): Promise<any> {
     const clientId = this.getNodeParameter('client_id', index) as string;
 
     const body = {
+        cid: credentials.cid,
+        user: credentials.user,
+        pass: credentials.pass,
         client_id: clientId,
     };
 
     const response = await this.helpers.request({
         method: 'POST',
-        url: 'https://api.icount.co.il/api/v3.php/client/get',
-        headers: {
-            'Authorization': `Bearer ${credentials.token}`,
-            'Content-Type': 'application/json',
-        },
+        url: 'https://api.icount.co.il/api/v3.php/client/info',
         body,
         json: true,
     });
