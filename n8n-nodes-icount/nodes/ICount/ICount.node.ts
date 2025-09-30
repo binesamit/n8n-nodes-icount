@@ -75,6 +75,11 @@ import {
     executeGet as executeCustomerGet,
 } from './resources/customer/get.operation';
 
+import {
+    customerGetOpenDocsDescription,
+    executeGetOpenDocs,
+} from './resources/customer/getOpenDocs.operation';
+
 export class ICount implements INodeType {
     description: INodeTypeDescription = {
         displayName: 'iCount',
@@ -218,16 +223,22 @@ export class ICount implements INodeType {
                         action: 'Upsert a customer',
                     },
                     {
+                        name: 'Get',
+                        value: 'get',
+                        description: 'שליפת לקוח לפי ID',
+                        action: 'Get a customer',
+                    },
+                    {
                         name: 'List',
                         value: 'list',
                         description: 'רשימת לקוחות',
                         action: 'List customers',
                     },
                     {
-                        name: 'Get',
-                        value: 'get',
-                        description: 'שליפת לקוח לפי ID',
-                        action: 'Get a customer',
+                        name: 'Get Open Docs',
+                        value: 'getOpenDocs',
+                        description: 'רשימת מסמכים פתוחים ללקוחות',
+                        action: 'Get open documents',
                     },
                 ],
                 default: 'upsert',
@@ -246,8 +257,9 @@ export class ICount implements INodeType {
             ...documentGetDocUrlDescription,
             ...documentDownloadPdfDescription,
             ...customerUpsertDescription,
-            ...customerListDescription,
             ...customerGetDescription,
+            ...customerListDescription,
+            ...customerGetOpenDocsDescription,
         ],
     };
 
@@ -306,13 +318,17 @@ export class ICount implements INodeType {
                         case 'upsert':
                             result = await executeUpsert.call(this, i);
                             break;
+                        case 'get':
+                            result = await executeCustomerGet.call(this, i);
+                            break;
                         case 'list':
                             const customerListResults = await executeCustomerList.call(this, i);
                             returnData.push(...customerListResults);
                             continue;
-                        case 'get':
-                            result = await executeCustomerGet.call(this, i);
-                            break;
+                        case 'getOpenDocs':
+                            const openDocsResults = await executeGetOpenDocs.call(this, i);
+                            returnData.push(...openDocsResults);
+                            continue;
                         default:
                             throw new Error(`Unknown operation: ${operation}`);
                     }
