@@ -221,84 +221,6 @@ export const customerUpsertDescription: INodeProperties[] = [
         description: 'מספר בית - כתובת עסק',
     },
     {
-        displayName: 'Home Country',
-        name: 'home_country',
-        type: 'string',
-        displayOptions: {
-            show: {
-                resource: ['customer'],
-                operation: ['upsert'],
-            },
-        },
-        default: '',
-        description: 'מדינה - כתובת מגורים',
-    },
-    {
-        displayName: 'Home State',
-        name: 'home_state',
-        type: 'string',
-        displayOptions: {
-            show: {
-                resource: ['customer'],
-                operation: ['upsert'],
-            },
-        },
-        default: '',
-        description: 'מחוז/אזור - כתובת מגורים',
-    },
-    {
-        displayName: 'Home City',
-        name: 'home_city',
-        type: 'string',
-        displayOptions: {
-            show: {
-                resource: ['customer'],
-                operation: ['upsert'],
-            },
-        },
-        default: '',
-        description: 'עיר - כתובת מגורים',
-    },
-    {
-        displayName: 'Home ZIP',
-        name: 'home_zip',
-        type: 'string',
-        displayOptions: {
-            show: {
-                resource: ['customer'],
-                operation: ['upsert'],
-            },
-        },
-        default: '',
-        description: 'מיקוד - כתובת מגורים',
-    },
-    {
-        displayName: 'Home Street',
-        name: 'home_street',
-        type: 'string',
-        displayOptions: {
-            show: {
-                resource: ['customer'],
-                operation: ['upsert'],
-            },
-        },
-        default: '',
-        description: 'רחוב - כתובת מגורים',
-    },
-    {
-        displayName: 'Home Street Number',
-        name: 'home_no',
-        type: 'string',
-        displayOptions: {
-            show: {
-                resource: ['customer'],
-                operation: ['upsert'],
-            },
-        },
-        default: '',
-        description: 'מספר בית - כתובת מגורים',
-    },
-    {
         displayName: 'Bank',
         name: 'bank',
         type: 'options',
@@ -500,12 +422,6 @@ export async function executeUpsert(this: any, index: number): Promise<any> {
     const busZip = this.getNodeParameter('bus_zip', index, '') as string;
     const busStreet = this.getNodeParameter('bus_street', index, '') as string;
     const busNo = this.getNodeParameter('bus_no', index, '') as string;
-    const homeCountry = this.getNodeParameter('home_country', index, '') as string;
-    const homeState = this.getNodeParameter('home_state', index, '') as string;
-    const homeCity = this.getNodeParameter('home_city', index, '') as string;
-    const homeZip = this.getNodeParameter('home_zip', index, '') as string;
-    const homeStreet = this.getNodeParameter('home_street', index, '') as string;
-    const homeNo = this.getNodeParameter('home_no', index, '') as string;
     const bank = this.getNodeParameter('bank', index, '') as string;
     const branch = this.getNodeParameter('branch', index, '') as string;
     const account = this.getNodeParameter('account', index, '') as string;
@@ -558,12 +474,6 @@ export async function executeUpsert(this: any, index: number): Promise<any> {
     if (busZip) customerData.bus_zip = busZip;
     if (busStreet) customerData.bus_street = busStreet;
     if (busNo) customerData.bus_no = busNo;
-    if (homeCountry) customerData.home_country = homeCountry;
-    if (homeState) customerData.home_state = homeState;
-    if (homeCity) customerData.home_city = homeCity;
-    if (homeZip) customerData.home_zip = homeZip;
-    if (homeStreet) customerData.home_street = homeStreet;
-    if (homeNo) customerData.home_no = homeNo;
     if (bank) customerData.bank = bank;
     if (branch) customerData.branch = branch;
     if (account) customerData.account = account;
