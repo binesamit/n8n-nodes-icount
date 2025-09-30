@@ -2,18 +2,36 @@ import { INodeProperties } from 'n8n-workflow';
 
 export const documentCreditDescription: INodeProperties[] = [
     {
-        displayName: 'Original Document ID',
-        name: 'origin_doc_id',
-        type: 'string',
+        displayName: 'Original Document Type',
+        name: 'origin_doctype',
+        type: 'options',
         displayOptions: {
             show: {
                 resource: ['document'],
                 operation: ['credit'],
             },
         },
-        default: '',
+        options: [
+            { name: 'חשבונית מס (Invoice)', value: 'invoice' },
+            { name: 'חשבונית מס קבלה (Invoice Receipt)', value: 'invrec' },
+        ],
+        default: 'invoice',
         required: true,
-        description: 'מזהה המסמך המקורי (UUID) לזיכוי',
+        description: 'סוג המסמך המקורי',
+    },
+    {
+        displayName: 'Original Document Number',
+        name: 'origin_docnum',
+        type: 'number',
+        displayOptions: {
+            show: {
+                resource: ['document'],
+                operation: ['credit'],
+            },
+        },
+        default: 0,
+        required: true,
+        description: 'מספר המסמך המקורי',
     },
     {
         displayName: 'Credit Type',
@@ -145,7 +163,8 @@ export const documentCreditDescription: INodeProperties[] = [
 ];
 
 export async function executeCredit(this: any, index: number): Promise<any> {
-    const originDocId = this.getNodeParameter('origin_doc_id', index) as string;
+    const originDoctype = this.getNodeParameter('origin_doctype', index) as string;
+    const originDocnum = this.getNodeParameter('origin_docnum', index) as number;
     const creditType = this.getNodeParameter('credit_type', index) as string;
     const comments = this.getNodeParameter('comments', index, '') as string;
     const sendEmail = this.getNodeParameter('send_email', index, false) as boolean;
@@ -154,7 +173,10 @@ export async function executeCredit(this: any, index: number): Promise<any> {
     const docInfoResponse = await this.helpers.requestWithAuthentication.call(this, 'iCountApi', {
         method: 'POST',
         url: 'https://api.icount.co.il/api/v3.php/doc/info',
-        body: { doc_id: originDocId },
+        body: {
+            doctype: originDoctype,
+            docnum: originDocnum,
+        },
         json: true,
     });
 
@@ -189,7 +211,7 @@ export async function executeCredit(this: any, index: number): Promise<any> {
         doctype: 'refund',
         client_name: origDoc.client_name,
         client_id: origDoc.client_id,
-        origin_doc_id: originDocId,
+        origin_doc_id: origDoc.doc_id,
         hwc: comments,
         send_email: sendEmail ? 1 : 0,
         items: items,
@@ -211,7 +233,9 @@ export async function executeCredit(this: any, index: number): Promise<any> {
         json: {
             credit_doc_id: response.data.doc_id,
             credit_doc_number: response.data.doc_number,
-            origin_doc_id: originDocId,
+            origin_doctype: originDoctype,
+            origin_docnum: originDocnum,
+            origin_doc_id: origDoc.doc_id,
             pdf_url: response.data.pdf_link,
             ...response.data,
         },
