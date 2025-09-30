@@ -36,5 +36,5 @@ export async function executeGet(this: any, index: number): Promise<any> {
         throw new Error(`iCount API Error: ${errorMsg}`);
     }
 
-    return { json: response.data };
+    return { json: response.data || response };
 }

@@ -39,12 +39,12 @@ export async function executeList(this: any, index: number): Promise<any> {
     let limit = returnAll ? 1000 : this.getNodeParameter('limit', index, 50) as number;
 
     const body = {
-        limit,
+        max_results: limit,
     };
 
     const response = await this.helpers.requestWithAuthentication.call(this, 'iCountApi', {
         method: 'POST',
-        url: 'https://api.icount.co.il/api/v3.php/client/list',
+        url: 'https://api.icount.co.il/api/v3.php/client/search',
         body,
         json: true,
     });
@@ -54,7 +54,7 @@ export async function executeList(this: any, index: number): Promise<any> {
         throw new Error(`iCount API Error: ${errorMsg}`);
     }
 
-    const customers = response.data?.clients || [];
+    const customers = response.data || [];
 
     return customers.map((customer: any) => ({ json: customer }));
 }
