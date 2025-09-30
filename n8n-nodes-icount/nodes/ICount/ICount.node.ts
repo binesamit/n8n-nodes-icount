@@ -333,10 +333,21 @@ export class ICount implements INodeType {
                         json: true,
                     });
 
-                    const banks = response?.data || [];
+                    // Try different possible response structures
+                    let banks = response?.data || response?.banks || response || [];
+
+                    // If banks is an object with numbered keys, convert to array
+                    if (typeof banks === 'object' && !Array.isArray(banks)) {
+                        banks = Object.values(banks);
+                    }
+
+                    if (!Array.isArray(banks) || banks.length === 0) {
+                        return [];
+                    }
+
                     return banks.map((bank: any) => ({
-                        name: `${bank.bank_id} - ${bank.bank_name}`,
-                        value: bank.bank_id,
+                        name: `${bank.bank_id || bank.id} - ${bank.bank_name || bank.name}`,
+                        value: String(bank.bank_id || bank.id),
                     }));
                 } catch (error) {
                     return [];
@@ -358,10 +369,21 @@ export class ICount implements INodeType {
                         json: true,
                     });
 
-                    const users = response?.data || [];
+                    // Try different possible response structures
+                    let users = response?.data || response?.users || response || [];
+
+                    // If users is an object with numbered keys, convert to array
+                    if (typeof users === 'object' && !Array.isArray(users)) {
+                        users = Object.values(users);
+                    }
+
+                    if (!Array.isArray(users) || users.length === 0) {
+                        return [];
+                    }
+
                     return users.map((user: any) => ({
-                        name: user.user_name || user.email,
-                        value: user.user_id,
+                        name: user.user_name || user.name || user.email,
+                        value: String(user.user_id || user.id),
                     }));
                 } catch (error) {
                     return [];
@@ -383,10 +405,21 @@ export class ICount implements INodeType {
                         json: true,
                     });
 
-                    const types = response?.data || [];
+                    // Try different possible response structures
+                    let types = response?.data || response?.types || response || [];
+
+                    // If types is an object with numbered keys, convert to array
+                    if (typeof types === 'object' && !Array.isArray(types)) {
+                        types = Object.values(types);
+                    }
+
+                    if (!Array.isArray(types) || types.length === 0) {
+                        return [];
+                    }
+
                     return types.map((type: any) => ({
-                        name: type.client_type_name,
-                        value: type.client_type_id,
+                        name: type.client_type_name || type.name,
+                        value: String(type.client_type_id || type.id),
                     }));
                 } catch (error) {
                     return [];
@@ -408,10 +441,21 @@ export class ICount implements INodeType {
                         json: true,
                     });
 
-                    const types = response?.data || [];
+                    // Try different possible response structures
+                    let types = response?.data || response?.contact_types || response || [];
+
+                    // If types is an object with numbered keys, convert to array
+                    if (typeof types === 'object' && !Array.isArray(types)) {
+                        types = Object.values(types);
+                    }
+
+                    if (!Array.isArray(types) || types.length === 0) {
+                        return [];
+                    }
+
                     return types.map((type: any) => ({
-                        name: type.contact_type_name,
-                        value: type.contact_type_id,
+                        name: type.contact_type_name || type.name,
+                        value: String(type.contact_type_id || type.id),
                     }));
                 } catch (error) {
                     return [];
