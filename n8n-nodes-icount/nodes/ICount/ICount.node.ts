@@ -68,6 +68,21 @@ import {
     executeGetOpenDocs,
 } from './resources/customer/getOpenDocs.operation';
 
+import {
+    customerDeleteDescription,
+    executeDelete,
+} from './resources/customer/delete.operation';
+
+import {
+    customerGetContactsDescription,
+    executeGetContacts,
+} from './resources/customer/getContacts.operation';
+
+import {
+    customerAddContactDescription,
+    executeAddContact,
+} from './resources/customer/addContact.operation';
+
 export class ICount implements INodeType {
     description: INodeTypeDescription = {
         displayName: 'iCount',
@@ -205,10 +220,28 @@ export class ICount implements INodeType {
                         action: 'List customers',
                     },
                     {
+                        name: 'Delete',
+                        value: 'delete',
+                        description: 'מחיקת לקוח',
+                        action: 'Delete a customer',
+                    },
+                    {
                         name: 'Get Open Docs',
                         value: 'getOpenDocs',
                         description: 'רשימת מסמכים פתוחים ללקוחות',
                         action: 'Get open documents',
+                    },
+                    {
+                        name: 'Get Contacts',
+                        value: 'getContacts',
+                        description: 'שליפת אנשי קשר של לקוח',
+                        action: 'Get customer contacts',
+                    },
+                    {
+                        name: 'Add Contact',
+                        value: 'addContact',
+                        description: 'הוספת איש קשר ללקוח',
+                        action: 'Add customer contact',
                     },
                 ],
                 default: 'upsert',
@@ -226,7 +259,10 @@ export class ICount implements INodeType {
             ...customerUpsertDescription,
             ...customerGetDescription,
             ...customerListDescription,
+            ...customerDeleteDescription,
             ...customerGetOpenDocsDescription,
+            ...customerGetContactsDescription,
+            ...customerAddContactDescription,
         ],
     };
 
@@ -283,10 +319,20 @@ export class ICount implements INodeType {
                             const customerListResults = await executeCustomerList.call(this, i);
                             returnData.push(...customerListResults);
                             continue;
+                        case 'delete':
+                            result = await executeDelete.call(this, i);
+                            break;
                         case 'getOpenDocs':
                             const openDocsResults = await executeGetOpenDocs.call(this, i);
                             returnData.push(...openDocsResults);
                             continue;
+                        case 'getContacts':
+                            const contactsResults = await executeGetContacts.call(this, i);
+                            returnData.push(...contactsResults);
+                            continue;
+                        case 'addContact':
+                            result = await executeAddContact.call(this, i);
+                            break;
                         default:
                             throw new Error(`Unknown operation: ${operation}`);
                     }

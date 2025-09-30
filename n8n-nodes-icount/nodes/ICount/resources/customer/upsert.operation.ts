@@ -69,22 +69,236 @@ export const customerUpsertDescription: INodeProperties[] = [
         default: {},
         options: [
             {
-                displayName: 'Address',
-                name: 'address',
+                displayName: 'First Name',
+                name: 'first_name',
                 type: 'string',
                 default: '',
+                description: 'שם פרטי',
             },
             {
-                displayName: 'City',
-                name: 'city',
+                displayName: 'Last Name',
+                name: 'last_name',
                 type: 'string',
                 default: '',
+                description: 'שם משפחה',
+            },
+            {
+                displayName: 'VAT ID',
+                name: 'vat_id',
+                type: 'string',
+                default: '',
+                description: 'מספר עוסק מורשה',
             },
             {
                 displayName: 'Phone',
                 name: 'phone',
                 type: 'string',
                 default: '',
+                description: 'טלפון',
+            },
+            {
+                displayName: 'Mobile',
+                name: 'mobile',
+                type: 'string',
+                default: '',
+                description: 'נייד',
+            },
+            {
+                displayName: 'Fax',
+                name: 'fax',
+                type: 'string',
+                default: '',
+                description: 'פקס',
+            },
+            {
+                displayName: 'Address',
+                name: 'address',
+                type: 'string',
+                default: '',
+                description: 'כתובת (שדה כללי)',
+            },
+            {
+                displayName: 'City',
+                name: 'city',
+                type: 'string',
+                default: '',
+                description: 'עיר (שדה כללי)',
+            },
+            {
+                displayName: 'Business Country',
+                name: 'bus_country',
+                type: 'string',
+                default: '',
+                description: 'מדינה - כתובת עסק',
+            },
+            {
+                displayName: 'Business State',
+                name: 'bus_state',
+                type: 'string',
+                default: '',
+                description: 'מחוז/אזור - כתובת עסק',
+            },
+            {
+                displayName: 'Business City',
+                name: 'bus_city',
+                type: 'string',
+                default: '',
+                description: 'עיר - כתובת עסק',
+            },
+            {
+                displayName: 'Business ZIP',
+                name: 'bus_zip',
+                type: 'string',
+                default: '',
+                description: 'מיקוד - כתובת עסק',
+            },
+            {
+                displayName: 'Business Street',
+                name: 'bus_street',
+                type: 'string',
+                default: '',
+                description: 'רחוב - כתובת עסק',
+            },
+            {
+                displayName: 'Business Street Number',
+                name: 'bus_no',
+                type: 'string',
+                default: '',
+                description: 'מספר בית - כתובת עסק',
+            },
+            {
+                displayName: 'Home Country',
+                name: 'home_country',
+                type: 'string',
+                default: '',
+                description: 'מדינה - כתובת מגורים',
+            },
+            {
+                displayName: 'Home State',
+                name: 'home_state',
+                type: 'string',
+                default: '',
+                description: 'מחוז/אזור - כתובת מגורים',
+            },
+            {
+                displayName: 'Home City',
+                name: 'home_city',
+                type: 'string',
+                default: '',
+                description: 'עיר - כתובת מגורים',
+            },
+            {
+                displayName: 'Home ZIP',
+                name: 'home_zip',
+                type: 'string',
+                default: '',
+                description: 'מיקוד - כתובת מגורים',
+            },
+            {
+                displayName: 'Home Street',
+                name: 'home_street',
+                type: 'string',
+                default: '',
+                description: 'רחוב - כתובת מגורים',
+            },
+            {
+                displayName: 'Home Street Number',
+                name: 'home_no',
+                type: 'string',
+                default: '',
+                description: 'מספר בית - כתובת מגורים',
+            },
+            {
+                displayName: 'Bank',
+                name: 'bank',
+                type: 'string',
+                default: '',
+                description: 'בנק',
+            },
+            {
+                displayName: 'Branch',
+                name: 'branch',
+                type: 'string',
+                default: '',
+                description: 'סניף',
+            },
+            {
+                displayName: 'Account',
+                name: 'account',
+                type: 'string',
+                default: '',
+                description: 'חשבון',
+            },
+            {
+                displayName: 'Foreign Account',
+                name: 'faccount',
+                type: 'string',
+                default: '',
+                description: 'חשבון זר',
+            },
+            {
+                displayName: 'Notes',
+                name: 'notes',
+                type: 'string',
+                typeOptions: { rows: 3 },
+                default: '',
+                description: 'הערות',
+            },
+            {
+                displayName: 'Digital Signature',
+                name: 'digsig',
+                type: 'string',
+                default: '',
+                description: 'חתימה דיגיטלית',
+            },
+            {
+                displayName: 'Custom Client ID',
+                name: 'custom_client_id',
+                type: 'string',
+                default: '',
+                description: 'מזהה לקוח מותאם אישית',
+            },
+            {
+                displayName: 'Custom Info',
+                name: 'custom_info',
+                type: 'string',
+                default: '',
+                description: 'מידע מותאם אישית',
+            },
+            {
+                displayName: 'Employee Assigned',
+                name: 'employee_assigned',
+                type: 'number',
+                default: 0,
+                description: 'מספר עובד מוקצה',
+            },
+            {
+                displayName: 'Client Type ID',
+                name: 'client_type_id',
+                type: 'number',
+                default: 0,
+                description: 'מזהה סוג לקוח',
+            },
+            {
+                displayName: 'Client Type Name',
+                name: 'client_type_name',
+                type: 'string',
+                default: '',
+                description: 'שם סוג לקוח',
+            },
+            {
+                displayName: 'Payment Terms',
+                name: 'payment_terms',
+                type: 'number',
+                default: 0,
+                description: 'תנאי תשלום (מספר ימים)',
+            },
+            {
+                displayName: 'Client Type Discount',
+                name: 'client_type_discount',
+                type: 'number',
+                default: 0,
+                description: 'הנחת סוג לקוח (%)',
             },
         ],
     },
@@ -98,14 +312,46 @@ export async function executeUpsert(this: any, index: number): Promise<any> {
     const email = this.getNodeParameter('email', index, '') as string;
     const additionalFields = this.getNodeParameter('additionalFields', index, {}) as any;
 
-    const customerData = {
+    const customerData: any = {
         client_name: name,
         client_hp: idNumber,
         client_email: email,
-        client_address: additionalFields.address || '',
-        client_city: additionalFields.city || '',
-        client_phone: additionalFields.phone || '',
     };
+
+    // Add all additional fields if provided
+    if (additionalFields.first_name) customerData.first_name = additionalFields.first_name;
+    if (additionalFields.last_name) customerData.last_name = additionalFields.last_name;
+    if (additionalFields.vat_id) customerData.vat_id = additionalFields.vat_id;
+    if (additionalFields.phone) customerData.client_phone = additionalFields.phone;
+    if (additionalFields.mobile) customerData.mobile = additionalFields.mobile;
+    if (additionalFields.fax) customerData.fax = additionalFields.fax;
+    if (additionalFields.address) customerData.client_address = additionalFields.address;
+    if (additionalFields.city) customerData.client_city = additionalFields.city;
+    if (additionalFields.bus_country) customerData.bus_country = additionalFields.bus_country;
+    if (additionalFields.bus_state) customerData.bus_state = additionalFields.bus_state;
+    if (additionalFields.bus_city) customerData.bus_city = additionalFields.bus_city;
+    if (additionalFields.bus_zip) customerData.bus_zip = additionalFields.bus_zip;
+    if (additionalFields.bus_street) customerData.bus_street = additionalFields.bus_street;
+    if (additionalFields.bus_no) customerData.bus_no = additionalFields.bus_no;
+    if (additionalFields.home_country) customerData.home_country = additionalFields.home_country;
+    if (additionalFields.home_state) customerData.home_state = additionalFields.home_state;
+    if (additionalFields.home_city) customerData.home_city = additionalFields.home_city;
+    if (additionalFields.home_zip) customerData.home_zip = additionalFields.home_zip;
+    if (additionalFields.home_street) customerData.home_street = additionalFields.home_street;
+    if (additionalFields.home_no) customerData.home_no = additionalFields.home_no;
+    if (additionalFields.bank) customerData.bank = additionalFields.bank;
+    if (additionalFields.branch) customerData.branch = additionalFields.branch;
+    if (additionalFields.account) customerData.account = additionalFields.account;
+    if (additionalFields.faccount) customerData.faccount = additionalFields.faccount;
+    if (additionalFields.notes) customerData.notes = additionalFields.notes;
+    if (additionalFields.digsig) customerData.digsig = additionalFields.digsig;
+    if (additionalFields.custom_client_id) customerData.custom_client_id = additionalFields.custom_client_id;
+    if (additionalFields.custom_info) customerData.custom_info = additionalFields.custom_info;
+    if (additionalFields.employee_assigned) customerData.employee_assigned = additionalFields.employee_assigned;
+    if (additionalFields.client_type_id) customerData.client_type_id = additionalFields.client_type_id;
+    if (additionalFields.client_type_name) customerData.client_type_name = additionalFields.client_type_name;
+    if (additionalFields.payment_terms) customerData.payment_terms = additionalFields.payment_terms;
+    if (additionalFields.client_type_discount) customerData.client_type_discount = additionalFields.client_type_discount;
 
     // Try to find existing customer
     const searchValue = searchBy === 'id_number' ? idNumber : email;
