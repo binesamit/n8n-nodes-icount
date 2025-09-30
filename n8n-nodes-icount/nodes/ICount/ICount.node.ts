@@ -54,6 +54,16 @@ import {
 } from './resources/customer/upsert.operation';
 
 import {
+    customerCreateDescription,
+    executeCreateCustomer,
+} from './resources/customer/create.operation';
+
+import {
+    customerUpdateDescription,
+    executeUpdateCustomer,
+} from './resources/customer/update.operation';
+
+import {
     customerListDescription,
     executeList as executeCustomerList,
 } from './resources/customer/list.operation';
@@ -212,6 +222,18 @@ export class ICount implements INodeType {
                 },
                 options: [
                     {
+                        name: 'Create',
+                        value: 'create',
+                        description: 'יצירת לקוח חדש',
+                        action: 'Create a customer',
+                    },
+                    {
+                        name: 'Update',
+                        value: 'update',
+                        description: 'עדכון לקוח קיים',
+                        action: 'Update a customer',
+                    },
+                    {
                         name: 'Upsert',
                         value: 'upsert',
                         description: 'יצירה או עדכון לקוח',
@@ -278,6 +300,8 @@ export class ICount implements INodeType {
             ...documentSearchDescription,
             ...documentListDescription,
             ...documentGetDocUrlDescription,
+            ...customerCreateDescription,
+            ...customerUpdateDescription,
             ...customerUpsertDescription,
             ...customerGetDescription,
             ...customerListDescription,
@@ -333,6 +357,12 @@ export class ICount implements INodeType {
                     }
                 } else if (resource === 'customer') {
                     switch (operation) {
+                        case 'create':
+                            result = await executeCreateCustomer.call(this, i);
+                            break;
+                        case 'update':
+                            result = await executeUpdateCustomer.call(this, i);
+                            break;
                         case 'upsert':
                             result = await executeUpsert.call(this, i);
                             break;
