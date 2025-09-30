@@ -533,19 +533,34 @@ export async function executeUpsert(this: any, index: number): Promise<any> {
         client_name: name,
     };
 
-    // Add required fields only if provided
-    if (idNumber) customerData.client_hp = idNumber;
-    if (email) customerData.client_email = email;
+    // Add required fields only if provided - try both with and without client_ prefix
+    if (idNumber) {
+        customerData.client_hp = idNumber;
+        customerData.hp = idNumber;
+    }
+    if (email) {
+        customerData.client_email = email;
+        customerData.email = email;
+    }
 
     // Add all other fields if provided
     if (firstName) customerData.first_name = firstName;
     if (lastName) customerData.last_name = lastName;
     if (vatId) customerData.vat_id = vatId;
-    if (phone) customerData.client_phone = phone;
+    if (phone) {
+        customerData.client_phone = phone;
+        customerData.phone = phone;
+    }
     if (mobile) customerData.mobile = mobile;
     if (fax) customerData.fax = fax;
-    if (address) customerData.client_address = address;
-    if (city) customerData.client_city = city;
+    if (address) {
+        customerData.client_address = address;
+        customerData.address = address;
+    }
+    if (city) {
+        customerData.client_city = city;
+        customerData.city = city;
+    }
     if (busCountry) customerData.bus_country = busCountry;
     if (busState) customerData.bus_state = busState;
     if (busCity) customerData.bus_city = busCity;
