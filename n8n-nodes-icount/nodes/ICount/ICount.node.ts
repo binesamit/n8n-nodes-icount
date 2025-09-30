@@ -83,6 +83,16 @@ import {
     executeAddContact,
 } from './resources/customer/addContact.operation';
 
+import {
+    customerUpdateContactDescription,
+    executeUpdateContact,
+} from './resources/customer/updateContact.operation';
+
+import {
+    customerDeleteContactDescription,
+    executeDeleteContact,
+} from './resources/customer/deleteContact.operation';
+
 export class ICount implements INodeType {
     description: INodeTypeDescription = {
         displayName: 'iCount',
@@ -243,6 +253,18 @@ export class ICount implements INodeType {
                         description: 'הוספת איש קשר ללקוח',
                         action: 'Add customer contact',
                     },
+                    {
+                        name: 'Update Contact',
+                        value: 'updateContact',
+                        description: 'עדכון איש קשר',
+                        action: 'Update customer contact',
+                    },
+                    {
+                        name: 'Delete Contact',
+                        value: 'deleteContact',
+                        description: 'מחיקת איש קשר',
+                        action: 'Delete customer contact',
+                    },
                 ],
                 default: 'upsert',
             },
@@ -263,6 +285,8 @@ export class ICount implements INodeType {
             ...customerGetOpenDocsDescription,
             ...customerGetContactsDescription,
             ...customerAddContactDescription,
+            ...customerUpdateContactDescription,
+            ...customerDeleteContactDescription,
         ],
     };
 
@@ -332,6 +356,12 @@ export class ICount implements INodeType {
                             continue;
                         case 'addContact':
                             result = await executeAddContact.call(this, i);
+                            break;
+                        case 'updateContact':
+                            result = await executeUpdateContact.call(this, i);
+                            break;
+                        case 'deleteContact':
+                            result = await executeDeleteContact.call(this, i);
                             break;
                         default:
                             throw new Error(`Unknown operation: ${operation}`);

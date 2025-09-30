@@ -30,82 +30,135 @@ export const customerAddContactDescription: INodeProperties[] = [
 		description: 'שם איש הקשר',
 	},
 	{
-		displayName: 'Additional Fields',
-		name: 'additionalFields',
-		type: 'collection',
-		placeholder: 'Add Field',
+		displayName: 'Contact Type',
+		name: 'contact_type',
+		type: 'options',
 		displayOptions: {
 			show: {
 				resource: ['customer'],
 				operation: ['addContact'],
 			},
 		},
-		default: {},
 		options: [
-			{
-				displayName: 'Email',
-				name: 'email',
-				type: 'string',
-				default: '',
-				description: 'אימייל',
-			},
-			{
-				displayName: 'Phone',
-				name: 'phone',
-				type: 'string',
-				default: '',
-				description: 'טלפון',
-			},
-			{
-				displayName: 'Mobile',
-				name: 'mobile',
-				type: 'string',
-				default: '',
-				description: 'נייד',
-			},
-			{
-				displayName: 'Fax',
-				name: 'fax',
-				type: 'string',
-				default: '',
-				description: 'פקס',
-			},
-			{
-				displayName: 'Position',
-				name: 'position',
-				type: 'string',
-				default: '',
-				description: 'תפקיד',
-			},
-			{
-				displayName: 'Notes',
-				name: 'notes',
-				type: 'string',
-				typeOptions: { rows: 3 },
-				default: '',
-				description: 'הערות',
-			},
+			{ name: 'איש קשר ראשי (Primary)', value: 'PRIMARY' },
+			{ name: 'כספים (Billing)', value: 'BILLING' },
+			{ name: 'משלוח (Shipping)', value: 'SHIPPING' },
+			{ name: 'מנהל (Administrative)', value: 'ADMINISTRATIVE' },
+			{ name: 'טכני (Technical)', value: 'TECHNICAL' },
+			{ name: 'עובד (Employee)', value: 'EMPLOYEE' },
+			{ name: 'מנהל חשבונות (Accountant)', value: 'ACCOUNTANT' },
+			{ name: 'עורך דין (Lawyer)', value: 'LAWYER' },
+			{ name: 'נותן שירות (Service Provider)', value: 'SERVICE_PROVIDER' },
+			{ name: 'ספק (Supplier)', value: 'SUPPLIER' },
 		],
+		default: 'PRIMARY',
+		description: 'סוג איש קשר',
+	},
+	{
+		displayName: 'Email',
+		name: 'email',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['addContact'],
+			},
+		},
+		default: '',
+		description: 'אימייל',
+	},
+	{
+		displayName: 'Phone',
+		name: 'phone',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['addContact'],
+			},
+		},
+		default: '',
+		description: 'טלפון',
+	},
+	{
+		displayName: 'Mobile',
+		name: 'mobile',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['addContact'],
+			},
+		},
+		default: '',
+		description: 'נייד',
+	},
+	{
+		displayName: 'Fax',
+		name: 'fax',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['addContact'],
+			},
+		},
+		default: '',
+		description: 'פקס',
+	},
+	{
+		displayName: 'Position',
+		name: 'position',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['addContact'],
+			},
+		},
+		default: '',
+		description: 'תפקיד',
+	},
+	{
+		displayName: 'Notes',
+		name: 'notes',
+		type: 'string',
+		typeOptions: { rows: 3 },
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['addContact'],
+			},
+		},
+		default: '',
+		description: 'הערות',
 	},
 ];
 
 export async function executeAddContact(this: any, index: number): Promise<any> {
 	const clientId = this.getNodeParameter('client_id', index) as number;
 	const contactName = this.getNodeParameter('contact_name', index) as string;
-	const additionalFields = this.getNodeParameter('additionalFields', index, {}) as any;
+	const contactType = this.getNodeParameter('contact_type', index, 'PRIMARY') as string;
+	const email = this.getNodeParameter('email', index, '') as string;
+	const phone = this.getNodeParameter('phone', index, '') as string;
+	const mobile = this.getNodeParameter('mobile', index, '') as string;
+	const fax = this.getNodeParameter('fax', index, '') as string;
+	const position = this.getNodeParameter('position', index, '') as string;
+	const notes = this.getNodeParameter('notes', index, '') as string;
 
 	const body: any = {
 		client_id: clientId,
-		contact_name: contactName,
+		name: contactName,
+		contact_type: contactType,
 	};
 
 	// Add optional fields if provided
-	if (additionalFields.email) body.email = additionalFields.email;
-	if (additionalFields.phone) body.phone = additionalFields.phone;
-	if (additionalFields.mobile) body.mobile = additionalFields.mobile;
-	if (additionalFields.fax) body.fax = additionalFields.fax;
-	if (additionalFields.position) body.position = additionalFields.position;
-	if (additionalFields.notes) body.notes = additionalFields.notes;
+	if (email) body.email = email;
+	if (phone) body.phone = phone;
+	if (mobile) body.mobile = mobile;
+	if (fax) body.fax = fax;
+	if (position) body.position = position;
+	if (notes) body.notes = notes;
 
 	const response = await this.helpers.requestWithAuthentication.call(this, 'iCountApi', {
 		method: 'POST',

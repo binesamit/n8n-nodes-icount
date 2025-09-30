@@ -531,11 +531,13 @@ export async function executeUpsert(this: any, index: number): Promise<any> {
 
     const customerData: any = {
         client_name: name,
-        client_hp: idNumber,
-        client_email: email,
     };
 
-    // Add all fields if provided
+    // Add required fields only if provided
+    if (idNumber) customerData.client_hp = idNumber;
+    if (email) customerData.client_email = email;
+
+    // Add all other fields if provided
     if (firstName) customerData.first_name = firstName;
     if (lastName) customerData.last_name = lastName;
     if (vatId) customerData.vat_id = vatId;
