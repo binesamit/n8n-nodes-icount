@@ -15,10 +15,6 @@ import {
     executeUpdate,
 } from './resources/document/update.operation';
 
-import {
-    documentCreditDescription,
-    executeCredit,
-} from './resources/document/credit.operation';
 
 import {
     documentGetDescription,
@@ -139,12 +135,6 @@ export class ICount implements INodeType {
                         action: 'Update a document',
                     },
                     {
-                        name: 'Credit',
-                        value: 'credit',
-                        description: 'יצירת חשבונית זיכוי',
-                        action: 'Create a credit note',
-                    },
-                    {
                         name: 'Cancel',
                         value: 'cancel',
                         description: 'ביטול מסמך',
@@ -227,7 +217,6 @@ export class ICount implements INodeType {
             // ========== Operation Fields ==========
             ...documentCreateDescription,
             ...documentUpdateDescription,
-            ...documentCreditDescription,
             ...documentCancelDescription,
             ...documentCloseDescription,
             ...documentGetDescription,
@@ -258,9 +247,6 @@ export class ICount implements INodeType {
                             break;
                         case 'update':
                             result = await executeUpdate.call(this, i);
-                            break;
-                        case 'credit':
-                            result = await executeCredit.call(this, i);
                             break;
                         case 'cancel':
                             result = await executeCancel.call(this, i);
