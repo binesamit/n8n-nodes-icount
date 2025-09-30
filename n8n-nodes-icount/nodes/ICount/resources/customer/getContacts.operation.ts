@@ -36,7 +36,8 @@ export async function executeGetContacts(this: any, index: number): Promise<any>
 		throw new Error(`iCount API Error: ${errorMsg}`);
 	}
 
-	let contacts = response.data || response.contacts || [];
+	// Try different possible response structures
+	let contacts = response.data?.contacts || response.contacts || response.data || [];
 
 	// Ensure it's an array
 	if (!Array.isArray(contacts)) {
@@ -45,7 +46,7 @@ export async function executeGetContacts(this: any, index: number): Promise<any>
 
 	// If still empty, return debug info
 	if (contacts.length === 0 && response) {
-		return [{ json: { debug: 'No contacts found', response: response } }];
+		return [{ json: { debug: 'No contacts found', full_response: response } }];
 	}
 
 	return contacts.map((contact: any) => ({ json: contact }));

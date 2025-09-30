@@ -56,251 +56,434 @@ export const customerUpsertDescription: INodeProperties[] = [
         default: '',
     },
     {
-        displayName: 'Additional Fields',
-        name: 'additionalFields',
-        type: 'collection',
-        placeholder: 'Add Field',
+        displayName: 'First Name',
+        name: 'first_name',
+        type: 'string',
         displayOptions: {
             show: {
                 resource: ['customer'],
                 operation: ['upsert'],
             },
         },
-        default: {},
-        options: [
-            {
-                displayName: 'First Name',
-                name: 'first_name',
-                type: 'string',
-                default: '',
-                description: 'שם פרטי',
+        default: '',
+        description: 'שם פרטי',
+    },
+    {
+        displayName: 'Last Name',
+        name: 'last_name',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Last Name',
-                name: 'last_name',
-                type: 'string',
-                default: '',
-                description: 'שם משפחה',
+        },
+        default: '',
+        description: 'שם משפחה',
+    },
+    {
+        displayName: 'VAT ID',
+        name: 'vat_id',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'VAT ID',
-                name: 'vat_id',
-                type: 'string',
-                default: '',
-                description: 'מספר עוסק מורשה',
+        },
+        default: '',
+        description: 'מספר עוסק מורשה',
+    },
+    {
+        displayName: 'Phone',
+        name: 'phone',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Phone',
-                name: 'phone',
-                type: 'string',
-                default: '',
-                description: 'טלפון',
+        },
+        default: '',
+        description: 'טלפון',
+    },
+    {
+        displayName: 'Mobile',
+        name: 'mobile',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Mobile',
-                name: 'mobile',
-                type: 'string',
-                default: '',
-                description: 'נייד',
+        },
+        default: '',
+        description: 'נייד',
+    },
+    {
+        displayName: 'Fax',
+        name: 'fax',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Fax',
-                name: 'fax',
-                type: 'string',
-                default: '',
-                description: 'פקס',
+        },
+        default: '',
+        description: 'פקס',
+    },
+    {
+        displayName: 'Address',
+        name: 'address',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Address',
-                name: 'address',
-                type: 'string',
-                default: '',
-                description: 'כתובת (שדה כללי)',
+        },
+        default: '',
+        description: 'כתובת',
+    },
+    {
+        displayName: 'City',
+        name: 'city',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'City',
-                name: 'city',
-                type: 'string',
-                default: '',
-                description: 'עיר (שדה כללי)',
+        },
+        default: '',
+        description: 'עיר',
+    },
+    {
+        displayName: 'Business Country',
+        name: 'bus_country',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Business Country',
-                name: 'bus_country',
-                type: 'string',
-                default: '',
-                description: 'מדינה - כתובת עסק',
+        },
+        default: '',
+        description: 'מדינה - כתובת עסק',
+    },
+    {
+        displayName: 'Business State',
+        name: 'bus_state',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Business State',
-                name: 'bus_state',
-                type: 'string',
-                default: '',
-                description: 'מחוז/אזור - כתובת עסק',
+        },
+        default: '',
+        description: 'מחוז/אזור - כתובת עסק',
+    },
+    {
+        displayName: 'Business City',
+        name: 'bus_city',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Business City',
-                name: 'bus_city',
-                type: 'string',
-                default: '',
-                description: 'עיר - כתובת עסק',
+        },
+        default: '',
+        description: 'עיר - כתובת עסק',
+    },
+    {
+        displayName: 'Business ZIP',
+        name: 'bus_zip',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Business ZIP',
-                name: 'bus_zip',
-                type: 'string',
-                default: '',
-                description: 'מיקוד - כתובת עסק',
+        },
+        default: '',
+        description: 'מיקוד - כתובת עסק',
+    },
+    {
+        displayName: 'Business Street',
+        name: 'bus_street',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Business Street',
-                name: 'bus_street',
-                type: 'string',
-                default: '',
-                description: 'רחוב - כתובת עסק',
+        },
+        default: '',
+        description: 'רחוב - כתובת עסק',
+    },
+    {
+        displayName: 'Business Street Number',
+        name: 'bus_no',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Business Street Number',
-                name: 'bus_no',
-                type: 'string',
-                default: '',
-                description: 'מספר בית - כתובת עסק',
+        },
+        default: '',
+        description: 'מספר בית - כתובת עסק',
+    },
+    {
+        displayName: 'Home Country',
+        name: 'home_country',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Home Country',
-                name: 'home_country',
-                type: 'string',
-                default: '',
-                description: 'מדינה - כתובת מגורים',
+        },
+        default: '',
+        description: 'מדינה - כתובת מגורים',
+    },
+    {
+        displayName: 'Home State',
+        name: 'home_state',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Home State',
-                name: 'home_state',
-                type: 'string',
-                default: '',
-                description: 'מחוז/אזור - כתובת מגורים',
+        },
+        default: '',
+        description: 'מחוז/אזור - כתובת מגורים',
+    },
+    {
+        displayName: 'Home City',
+        name: 'home_city',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Home City',
-                name: 'home_city',
-                type: 'string',
-                default: '',
-                description: 'עיר - כתובת מגורים',
+        },
+        default: '',
+        description: 'עיר - כתובת מגורים',
+    },
+    {
+        displayName: 'Home ZIP',
+        name: 'home_zip',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Home ZIP',
-                name: 'home_zip',
-                type: 'string',
-                default: '',
-                description: 'מיקוד - כתובת מגורים',
+        },
+        default: '',
+        description: 'מיקוד - כתובת מגורים',
+    },
+    {
+        displayName: 'Home Street',
+        name: 'home_street',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Home Street',
-                name: 'home_street',
-                type: 'string',
-                default: '',
-                description: 'רחוב - כתובת מגורים',
+        },
+        default: '',
+        description: 'רחוב - כתובת מגורים',
+    },
+    {
+        displayName: 'Home Street Number',
+        name: 'home_no',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Home Street Number',
-                name: 'home_no',
-                type: 'string',
-                default: '',
-                description: 'מספר בית - כתובת מגורים',
+        },
+        default: '',
+        description: 'מספר בית - כתובת מגורים',
+    },
+    {
+        displayName: 'Bank',
+        name: 'bank',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Bank',
-                name: 'bank',
-                type: 'string',
-                default: '',
-                description: 'בנק',
+        },
+        default: '',
+        description: 'בנק',
+    },
+    {
+        displayName: 'Branch',
+        name: 'branch',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Branch',
-                name: 'branch',
-                type: 'string',
-                default: '',
-                description: 'סניף',
+        },
+        default: '',
+        description: 'סניף',
+    },
+    {
+        displayName: 'Account',
+        name: 'account',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Account',
-                name: 'account',
-                type: 'string',
-                default: '',
-                description: 'חשבון',
+        },
+        default: '',
+        description: 'חשבון',
+    },
+    {
+        displayName: 'Foreign Account',
+        name: 'faccount',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Foreign Account',
-                name: 'faccount',
-                type: 'string',
-                default: '',
-                description: 'חשבון זר',
+        },
+        default: '',
+        description: 'חשבון זר',
+    },
+    {
+        displayName: 'Notes',
+        name: 'notes',
+        type: 'string',
+        typeOptions: { rows: 3 },
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Notes',
-                name: 'notes',
-                type: 'string',
-                typeOptions: { rows: 3 },
-                default: '',
-                description: 'הערות',
+        },
+        default: '',
+        description: 'הערות',
+    },
+    {
+        displayName: 'Digital Signature',
+        name: 'digsig',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Digital Signature',
-                name: 'digsig',
-                type: 'string',
-                default: '',
-                description: 'חתימה דיגיטלית',
+        },
+        default: '',
+        description: 'חתימה דיגיטלית',
+    },
+    {
+        displayName: 'Custom Client ID',
+        name: 'custom_client_id',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Custom Client ID',
-                name: 'custom_client_id',
-                type: 'string',
-                default: '',
-                description: 'מזהה לקוח מותאם אישית',
+        },
+        default: '',
+        description: 'מזהה לקוח מותאם אישית',
+    },
+    {
+        displayName: 'Custom Info',
+        name: 'custom_info',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Custom Info',
-                name: 'custom_info',
-                type: 'string',
-                default: '',
-                description: 'מידע מותאם אישית',
+        },
+        default: '',
+        description: 'מידע מותאם אישית',
+    },
+    {
+        displayName: 'Employee Assigned',
+        name: 'employee_assigned',
+        type: 'number',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Employee Assigned',
-                name: 'employee_assigned',
-                type: 'number',
-                default: 0,
-                description: 'מספר עובד מוקצה',
+        },
+        default: 0,
+        description: 'מספר עובד מוקצה',
+    },
+    {
+        displayName: 'Client Type ID',
+        name: 'client_type_id',
+        type: 'number',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Client Type ID',
-                name: 'client_type_id',
-                type: 'number',
-                default: 0,
-                description: 'מזהה סוג לקוח',
+        },
+        default: 0,
+        description: 'מזהה סוג לקוח',
+    },
+    {
+        displayName: 'Client Type Name',
+        name: 'client_type_name',
+        type: 'string',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Client Type Name',
-                name: 'client_type_name',
-                type: 'string',
-                default: '',
-                description: 'שם סוג לקוח',
+        },
+        default: '',
+        description: 'שם סוג לקוח',
+    },
+    {
+        displayName: 'Payment Terms',
+        name: 'payment_terms',
+        type: 'number',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Payment Terms',
-                name: 'payment_terms',
-                type: 'number',
-                default: 0,
-                description: 'תנאי תשלום (מספר ימים)',
+        },
+        default: 0,
+        description: 'תנאי תשלום (מספר ימים)',
+    },
+    {
+        displayName: 'Client Type Discount',
+        name: 'client_type_discount',
+        type: 'number',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['upsert'],
             },
-            {
-                displayName: 'Client Type Discount',
-                name: 'client_type_discount',
-                type: 'number',
-                default: 0,
-                description: 'הנחת סוג לקוח (%)',
-            },
-        ],
+        },
+        default: 0,
+        description: 'הנחת סוג לקוח (%)',
     },
 ];
 
@@ -310,7 +493,41 @@ export async function executeUpsert(this: any, index: number): Promise<any> {
     const name = this.getNodeParameter('name', index) as string;
     const idNumber = this.getNodeParameter('id_number', index, '') as string;
     const email = this.getNodeParameter('email', index, '') as string;
-    const additionalFields = this.getNodeParameter('additionalFields', index, {}) as any;
+
+    // Get all fields directly as parameters (no more additionalFields)
+    const firstName = this.getNodeParameter('first_name', index, '') as string;
+    const lastName = this.getNodeParameter('last_name', index, '') as string;
+    const vatId = this.getNodeParameter('vat_id', index, '') as string;
+    const phone = this.getNodeParameter('phone', index, '') as string;
+    const mobile = this.getNodeParameter('mobile', index, '') as string;
+    const fax = this.getNodeParameter('fax', index, '') as string;
+    const address = this.getNodeParameter('address', index, '') as string;
+    const city = this.getNodeParameter('city', index, '') as string;
+    const busCountry = this.getNodeParameter('bus_country', index, '') as string;
+    const busState = this.getNodeParameter('bus_state', index, '') as string;
+    const busCity = this.getNodeParameter('bus_city', index, '') as string;
+    const busZip = this.getNodeParameter('bus_zip', index, '') as string;
+    const busStreet = this.getNodeParameter('bus_street', index, '') as string;
+    const busNo = this.getNodeParameter('bus_no', index, '') as string;
+    const homeCountry = this.getNodeParameter('home_country', index, '') as string;
+    const homeState = this.getNodeParameter('home_state', index, '') as string;
+    const homeCity = this.getNodeParameter('home_city', index, '') as string;
+    const homeZip = this.getNodeParameter('home_zip', index, '') as string;
+    const homeStreet = this.getNodeParameter('home_street', index, '') as string;
+    const homeNo = this.getNodeParameter('home_no', index, '') as string;
+    const bank = this.getNodeParameter('bank', index, '') as string;
+    const branch = this.getNodeParameter('branch', index, '') as string;
+    const account = this.getNodeParameter('account', index, '') as string;
+    const faccount = this.getNodeParameter('faccount', index, '') as string;
+    const notes = this.getNodeParameter('notes', index, '') as string;
+    const digsig = this.getNodeParameter('digsig', index, '') as string;
+    const customClientId = this.getNodeParameter('custom_client_id', index, '') as string;
+    const customInfo = this.getNodeParameter('custom_info', index, '') as string;
+    const employeeAssigned = this.getNodeParameter('employee_assigned', index, 0) as number;
+    const clientTypeId = this.getNodeParameter('client_type_id', index, 0) as number;
+    const clientTypeName = this.getNodeParameter('client_type_name', index, '') as string;
+    const paymentTerms = this.getNodeParameter('payment_terms', index, 0) as number;
+    const clientTypeDiscount = this.getNodeParameter('client_type_discount', index, 0) as number;
 
     const customerData: any = {
         client_name: name,
@@ -318,40 +535,40 @@ export async function executeUpsert(this: any, index: number): Promise<any> {
         client_email: email,
     };
 
-    // Add all additional fields if provided
-    if (additionalFields.first_name) customerData.first_name = additionalFields.first_name;
-    if (additionalFields.last_name) customerData.last_name = additionalFields.last_name;
-    if (additionalFields.vat_id) customerData.vat_id = additionalFields.vat_id;
-    if (additionalFields.phone) customerData.client_phone = additionalFields.phone;
-    if (additionalFields.mobile) customerData.mobile = additionalFields.mobile;
-    if (additionalFields.fax) customerData.fax = additionalFields.fax;
-    if (additionalFields.address) customerData.client_address = additionalFields.address;
-    if (additionalFields.city) customerData.client_city = additionalFields.city;
-    if (additionalFields.bus_country) customerData.bus_country = additionalFields.bus_country;
-    if (additionalFields.bus_state) customerData.bus_state = additionalFields.bus_state;
-    if (additionalFields.bus_city) customerData.bus_city = additionalFields.bus_city;
-    if (additionalFields.bus_zip) customerData.bus_zip = additionalFields.bus_zip;
-    if (additionalFields.bus_street) customerData.bus_street = additionalFields.bus_street;
-    if (additionalFields.bus_no) customerData.bus_no = additionalFields.bus_no;
-    if (additionalFields.home_country) customerData.home_country = additionalFields.home_country;
-    if (additionalFields.home_state) customerData.home_state = additionalFields.home_state;
-    if (additionalFields.home_city) customerData.home_city = additionalFields.home_city;
-    if (additionalFields.home_zip) customerData.home_zip = additionalFields.home_zip;
-    if (additionalFields.home_street) customerData.home_street = additionalFields.home_street;
-    if (additionalFields.home_no) customerData.home_no = additionalFields.home_no;
-    if (additionalFields.bank) customerData.bank = additionalFields.bank;
-    if (additionalFields.branch) customerData.branch = additionalFields.branch;
-    if (additionalFields.account) customerData.account = additionalFields.account;
-    if (additionalFields.faccount) customerData.faccount = additionalFields.faccount;
-    if (additionalFields.notes) customerData.notes = additionalFields.notes;
-    if (additionalFields.digsig) customerData.digsig = additionalFields.digsig;
-    if (additionalFields.custom_client_id) customerData.custom_client_id = additionalFields.custom_client_id;
-    if (additionalFields.custom_info) customerData.custom_info = additionalFields.custom_info;
-    if (additionalFields.employee_assigned) customerData.employee_assigned = additionalFields.employee_assigned;
-    if (additionalFields.client_type_id) customerData.client_type_id = additionalFields.client_type_id;
-    if (additionalFields.client_type_name) customerData.client_type_name = additionalFields.client_type_name;
-    if (additionalFields.payment_terms) customerData.payment_terms = additionalFields.payment_terms;
-    if (additionalFields.client_type_discount) customerData.client_type_discount = additionalFields.client_type_discount;
+    // Add all fields if provided
+    if (firstName) customerData.first_name = firstName;
+    if (lastName) customerData.last_name = lastName;
+    if (vatId) customerData.vat_id = vatId;
+    if (phone) customerData.client_phone = phone;
+    if (mobile) customerData.mobile = mobile;
+    if (fax) customerData.fax = fax;
+    if (address) customerData.client_address = address;
+    if (city) customerData.client_city = city;
+    if (busCountry) customerData.bus_country = busCountry;
+    if (busState) customerData.bus_state = busState;
+    if (busCity) customerData.bus_city = busCity;
+    if (busZip) customerData.bus_zip = busZip;
+    if (busStreet) customerData.bus_street = busStreet;
+    if (busNo) customerData.bus_no = busNo;
+    if (homeCountry) customerData.home_country = homeCountry;
+    if (homeState) customerData.home_state = homeState;
+    if (homeCity) customerData.home_city = homeCity;
+    if (homeZip) customerData.home_zip = homeZip;
+    if (homeStreet) customerData.home_street = homeStreet;
+    if (homeNo) customerData.home_no = homeNo;
+    if (bank) customerData.bank = bank;
+    if (branch) customerData.branch = branch;
+    if (account) customerData.account = account;
+    if (faccount) customerData.faccount = faccount;
+    if (notes) customerData.notes = notes;
+    if (digsig) customerData.digsig = digsig;
+    if (customClientId) customerData.custom_client_id = customClientId;
+    if (customInfo) customerData.custom_info = customInfo;
+    if (employeeAssigned) customerData.employee_assigned = employeeAssigned;
+    if (clientTypeId) customerData.client_type_id = clientTypeId;
+    if (clientTypeName) customerData.client_type_name = clientTypeName;
+    if (paymentTerms) customerData.payment_terms = paymentTerms;
+    if (clientTypeDiscount) customerData.client_type_discount = clientTypeDiscount;
 
     // Try to find existing customer
     const searchValue = searchBy === 'id_number' ? idNumber : email;
