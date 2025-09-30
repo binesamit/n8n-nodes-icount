@@ -150,6 +150,20 @@ export async function executeCredit(this: any, index: number): Promise<any> {
     const comments = this.getNodeParameter('comments', index, '') as string;
     const sendEmail = this.getNodeParameter('send_email', index, false) as boolean;
 
+    // First, get the original document info to get client details
+    const docInfoResponse = await this.helpers.requestWithAuthentication.call(this, 'iCountApi', {
+        method: 'POST',
+        url: 'https://api.icount.co.il/api/v3.php/doc/info',
+        body: { doc_id: originDocId },
+        json: true,
+    });
+
+    if (docInfoResponse.status === false) {
+        throw new Error(`Failed to get original document: ${JSON.stringify(docInfoResponse)}`);
+    }
+
+    const origDoc = docInfoResponse.data || docInfoResponse;
+
     let items = [];
     if (creditType === 'partial') {
         const itemsInputType = this.getNodeParameter('items_input_type', index, 'manual') as string;
@@ -165,26 +179,25 @@ export async function executeCredit(this: any, index: number): Promise<any> {
             const itemsData = this.getNodeParameter('items', index, {}) as any;
             items = itemsData.item || [];
         }
+    } else {
+        // Full credit - copy all items from original document
+        items = origDoc.items || [];
     }
 
-    // Use copy_doc to create credit note from original document
+    // Create credit note with client info from original document
     const body: any = {
+        doctype: 'refund',
+        client_name: origDoc.client_name,
+        client_id: origDoc.client_id,
         origin_doc_id: originDocId,
-        new_doctype: 'refund',
-        copy_lines: creditType === 'full',
         hwc: comments,
         send_email: sendEmail ? 1 : 0,
+        items: items,
     };
-
-    // For partial credit, add specific items to credit
-    if (creditType === 'partial' && items.length > 0) {
-        body.copy_lines = false;
-        body.items = items;
-    }
 
     const response = await this.helpers.requestWithAuthentication.call(this, 'iCountApi', {
         method: 'POST',
-        url: 'https://api.icount.co.il/api/v3.php/doc/copy_doc',
+        url: 'https://api.icount.co.il/api/v3.php/doc/create',
         body,
         json: true,
     });

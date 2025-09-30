@@ -76,7 +76,7 @@ export async function executeCancel(this: any, index: number): Promise<any> {
 	const body: any = {
 		doctype,
 		docnum,
-		refund_cc: refundCc,
+		refund_cc: refundCc ? 1 : 0,
 	};
 
 	if (reason) {

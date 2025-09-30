@@ -30,10 +30,6 @@ import {
     executeList,
 } from './resources/document/list.operation';
 
-import {
-    documentDownloadPdfDescription,
-    executeDownloadPdf,
-} from './resources/document/downloadPdf.operation';
 
 import {
     documentCancelDescription,
@@ -184,12 +180,6 @@ export class ICount implements INodeType {
                         description: 'קבלת URL של מסמך',
                         action: 'Get document URL',
                     },
-                    {
-                        name: 'Download PDF',
-                        value: 'downloadPdf',
-                        description: 'הורדת PDF של מסמך',
-                        action: 'Download document PDF',
-                    },
                 ],
                 default: 'create',
             },
@@ -244,7 +234,6 @@ export class ICount implements INodeType {
             ...documentSearchDescription,
             ...documentListDescription,
             ...documentGetDocUrlDescription,
-            ...documentDownloadPdfDescription,
             ...customerUpsertDescription,
             ...customerGetDescription,
             ...customerListDescription,
@@ -292,9 +281,6 @@ export class ICount implements INodeType {
                             continue;
                         case 'getDocUrl':
                             result = await executeGetDocUrl.call(this, i);
-                            break;
-                        case 'downloadPdf':
-                            result = await executeDownloadPdf.call(this, i);
                             break;
                         default:
                             throw new Error(`Unknown operation: ${operation}`);

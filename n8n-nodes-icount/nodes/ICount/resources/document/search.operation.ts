@@ -229,7 +229,17 @@ export async function executeSearch(this: any, index: number): Promise<any> {
 		throw new Error(`iCount API Error: ${errorMsg}`);
 	}
 
-	const documents = response.data || [];
+	let documents = response.data || [];
+
+	// Ensure it's an array
+	if (!Array.isArray(documents)) {
+		documents = [];
+	}
+
+	// If still empty, return debug info
+	if (documents.length === 0 && response) {
+		return [{ json: { debug: 'No documents found', response: response } }];
+	}
 
 	return documents.map((doc: any) => ({ json: doc }));
 }
