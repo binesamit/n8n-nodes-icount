@@ -317,7 +317,10 @@ export const customerUpdateDescription: INodeProperties[] = [
 	{
 		displayName: 'Bank',
 		name: 'bank',
-		type: 'string',
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getBanks',
+		},
 		displayOptions: {
 			show: {
 				resource: ['customer'],
@@ -422,27 +425,33 @@ export const customerUpdateDescription: INodeProperties[] = [
 	{
 		displayName: 'Employee Assigned',
 		name: 'employee_assigned',
-		type: 'number',
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getUsers',
+		},
 		displayOptions: {
 			show: {
 				resource: ['customer'],
 				operation: ['update'],
 			},
 		},
-		default: 0,
+		default: '',
 		description: 'משויך ל',
 	},
 	{
-		displayName: 'Client Type ID',
+		displayName: 'Client Type',
 		name: 'client_type_id',
-		type: 'number',
+		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getClientTypes',
+		},
 		displayOptions: {
 			show: {
 				resource: ['customer'],
 				operation: ['update'],
 			},
 		},
-		default: 0,
+		default: '',
 		description: 'סוג לקוח',
 	},
 	{
@@ -506,8 +515,8 @@ export async function executeUpdateCustomer(this: any, index: number): Promise<a
 	const digsig = this.getNodeParameter('digsig', index, '') as string;
 	const customClientId = this.getNodeParameter('custom_client_id', index, '') as string;
 	const customInfo = this.getNodeParameter('custom_info', index, '') as string;
-	const employeeAssigned = this.getNodeParameter('employee_assigned', index, 0) as number;
-	const clientTypeId = this.getNodeParameter('client_type_id', index, 0) as number;
+	const employeeAssigned = this.getNodeParameter('employee_assigned', index, '') as string;
+	const clientTypeId = this.getNodeParameter('client_type_id', index, '') as string;
 	const paymentTerms = this.getNodeParameter('payment_terms', index, 0) as number;
 	const clientTypeDiscount = this.getNodeParameter('client_type_discount', index, 0) as number;
 

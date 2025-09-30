@@ -301,7 +301,10 @@ export const customerUpsertDescription: INodeProperties[] = [
     {
         displayName: 'Bank',
         name: 'bank',
-        type: 'string',
+        type: 'options',
+        typeOptions: {
+            loadOptionsMethod: 'getBanks',
+        },
         displayOptions: {
             show: {
                 resource: ['customer'],
@@ -406,28 +409,34 @@ export const customerUpsertDescription: INodeProperties[] = [
     {
         displayName: 'Employee Assigned',
         name: 'employee_assigned',
-        type: 'number',
+        type: 'options',
+        typeOptions: {
+            loadOptionsMethod: 'getUsers',
+        },
         displayOptions: {
             show: {
                 resource: ['customer'],
                 operation: ['upsert'],
             },
         },
-        default: 0,
-        description: 'מספר עובד מוקצה',
+        default: '',
+        description: 'משויך ל',
     },
     {
-        displayName: 'Client Type ID',
+        displayName: 'Client Type',
         name: 'client_type_id',
-        type: 'number',
+        type: 'options',
+        typeOptions: {
+            loadOptionsMethod: 'getClientTypes',
+        },
         displayOptions: {
             show: {
                 resource: ['customer'],
                 operation: ['upsert'],
             },
         },
-        default: 0,
-        description: 'מזהה סוג לקוח',
+        default: '',
+        description: 'סוג לקוח',
     },
     {
         displayName: 'Client Type Name',
@@ -505,8 +514,8 @@ export async function executeUpsert(this: any, index: number): Promise<any> {
     const digsig = this.getNodeParameter('digsig', index, '') as string;
     const customClientId = this.getNodeParameter('custom_client_id', index, '') as string;
     const customInfo = this.getNodeParameter('custom_info', index, '') as string;
-    const employeeAssigned = this.getNodeParameter('employee_assigned', index, 0) as number;
-    const clientTypeId = this.getNodeParameter('client_type_id', index, 0) as number;
+    const employeeAssigned = this.getNodeParameter('employee_assigned', index, '') as string;
+    const clientTypeId = this.getNodeParameter('client_type_id', index, '') as string;
     const clientTypeName = this.getNodeParameter('client_type_name', index, '') as string;
     const paymentTerms = this.getNodeParameter('payment_terms', index, 0) as number;
     const clientTypeDiscount = this.getNodeParameter('client_type_discount', index, 0) as number;

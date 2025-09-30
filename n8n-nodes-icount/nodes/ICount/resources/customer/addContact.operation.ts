@@ -71,25 +71,16 @@ export const customerAddContactDescription: INodeProperties[] = [
 		displayName: 'Contact Type',
 		name: 'contact_type',
 		type: 'options',
+		typeOptions: {
+			loadOptionsMethod: 'getContactTypes',
+		},
 		displayOptions: {
 			show: {
 				resource: ['customer'],
 				operation: ['addContact'],
 			},
 		},
-		options: [
-			{ name: 'איש קשר ראשי (Primary)', value: 'PRIMARY' },
-			{ name: 'כספים (Billing)', value: 'BILLING' },
-			{ name: 'משלוח (Shipping)', value: 'SHIPPING' },
-			{ name: 'מנהל (Administrative)', value: 'ADMINISTRATIVE' },
-			{ name: 'טכני (Technical)', value: 'TECHNICAL' },
-			{ name: 'עובד (Employee)', value: 'EMPLOYEE' },
-			{ name: 'מנהל חשבונות (Accountant)', value: 'ACCOUNTANT' },
-			{ name: 'עורך דין (Lawyer)', value: 'LAWYER' },
-			{ name: 'נותן שירות (Service Provider)', value: 'SERVICE_PROVIDER' },
-			{ name: 'ספק (Supplier)', value: 'SUPPLIER' },
-		],
-		default: 'PRIMARY',
+		default: '',
 		description: 'סוג איש קשר',
 	},
 	{

@@ -1,6 +1,8 @@
 import {
     IExecuteFunctions,
+    ILoadOptionsFunctions,
     INodeExecutionData,
+    INodePropertyOptions,
     INodeType,
     INodeTypeDescription,
 } from 'n8n-workflow';
@@ -312,6 +314,110 @@ export class ICount implements INodeType {
             ...customerUpdateContactDescription,
             ...customerDeleteContactDescription,
         ],
+    };
+
+    methods = {
+        loadOptions: {
+            // Get list of banks
+            async getBanks(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+                const credentials = await this.getCredentials('iCountApi');
+
+                try {
+                    const response = await this.helpers.request({
+                        method: 'POST',
+                        url: 'https://api.icount.co.il/api/v3.php/bank/get_list',
+                        headers: {
+                            'Authorization': `Bearer ${credentials.token}`,
+                            'Content-Type': 'application/json',
+                        },
+                        json: true,
+                    });
+
+                    const banks = response?.data || [];
+                    return banks.map((bank: any) => ({
+                        name: `${bank.bank_id} - ${bank.bank_name}`,
+                        value: bank.bank_id,
+                    }));
+                } catch (error) {
+                    return [];
+                }
+            },
+
+            // Get list of users (employees)
+            async getUsers(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+                const credentials = await this.getCredentials('iCountApi');
+
+                try {
+                    const response = await this.helpers.request({
+                        method: 'POST',
+                        url: 'https://api.icount.co.il/api/v3.php/user/get_list',
+                        headers: {
+                            'Authorization': `Bearer ${credentials.token}`,
+                            'Content-Type': 'application/json',
+                        },
+                        json: true,
+                    });
+
+                    const users = response?.data || [];
+                    return users.map((user: any) => ({
+                        name: user.user_name || user.email,
+                        value: user.user_id,
+                    }));
+                } catch (error) {
+                    return [];
+                }
+            },
+
+            // Get list of client types
+            async getClientTypes(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+                const credentials = await this.getCredentials('iCountApi');
+
+                try {
+                    const response = await this.helpers.request({
+                        method: 'POST',
+                        url: 'https://api.icount.co.il/api/v3.php/client/types',
+                        headers: {
+                            'Authorization': `Bearer ${credentials.token}`,
+                            'Content-Type': 'application/json',
+                        },
+                        json: true,
+                    });
+
+                    const types = response?.data || [];
+                    return types.map((type: any) => ({
+                        name: type.client_type_name,
+                        value: type.client_type_id,
+                    }));
+                } catch (error) {
+                    return [];
+                }
+            },
+
+            // Get list of contact types
+            async getContactTypes(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+                const credentials = await this.getCredentials('iCountApi');
+
+                try {
+                    const response = await this.helpers.request({
+                        method: 'POST',
+                        url: 'https://api.icount.co.il/api/v3.php/client/contact_types',
+                        headers: {
+                            'Authorization': `Bearer ${credentials.token}`,
+                            'Content-Type': 'application/json',
+                        },
+                        json: true,
+                    });
+
+                    const types = response?.data || [];
+                    return types.map((type: any) => ({
+                        name: type.contact_type_name,
+                        value: type.contact_type_id,
+                    }));
+                } catch (error) {
+                    return [];
+                }
+            },
+        },
     };
 
     async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
