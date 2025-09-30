@@ -17,6 +17,7 @@ export const documentCreateDescription: INodeProperties[] = [
             { name: 'חשבונית מס קבלה (Invoice Receipt)', value: 'invrec' },
             { name: 'חשבונית מס (Tax Invoice)', value: 'invoice' },
             { name: 'קבלה (Receipt)', value: 'receipt' },
+            { name: 'חשבונית זיכוי (Credit Note/Refund)', value: 'refund' },
             { name: 'חשבון עסקה (Transaction Account)', value: 'deal' },
             { name: 'הצעת מחיר (Price Quote)', value: 'offer' },
             { name: 'הזמנה (Order)', value: 'order' },
