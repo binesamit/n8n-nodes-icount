@@ -87,6 +87,9 @@ export async function executeList(this: any, index: number): Promise<any> {
     const filters = this.getNodeParameter('filters', index, {}) as any;
 
     const body: any = {
+        cid: credentials.cid,
+        user: credentials.user,
+        pass: credentials.pass,
         ...filters,
     };
 
@@ -97,17 +100,13 @@ export async function executeList(this: any, index: number): Promise<any> {
     const response = await this.helpers.request({
         method: 'POST',
         url: 'https://api.icount.co.il/api/v3.php/doc/list',
-        headers: {
-            'Authorization': `Bearer ${credentials.token}`,
-            'Content-Type': 'application/json',
-        },
         body,
         json: true,
     });
 
     if (response.status === false) {
         const errorMsg = response.message || response.error || JSON.stringify(response);
-        throw new Error(`iCount API Error: ${errorMsg}` || 'Failed to list documents');
+        throw new Error(`iCount API Error: ${errorMsg}`);
     }
 
     const documents = response.data.documents || [];

@@ -22,23 +22,22 @@ export async function executeGet(this: any, index: number): Promise<any> {
     const docId = this.getNodeParameter('doc_id', index) as string;
 
     const body = {
+        cid: credentials.cid,
+        user: credentials.user,
+        pass: credentials.pass,
         doc_id: docId,
     };
 
     const response = await this.helpers.request({
         method: 'POST',
         url: 'https://api.icount.co.il/api/v3.php/doc/get',
-        headers: {
-            'Authorization': `Bearer ${credentials.token}`,
-            'Content-Type': 'application/json',
-        },
         body,
         json: true,
     });
 
     if (response.status === false) {
         const errorMsg = response.message || response.error || JSON.stringify(response);
-        throw new Error(`iCount API Error: ${errorMsg}` || 'Document not found');
+        throw new Error(`iCount API Error: ${errorMsg}`);
     }
 
     return { json: response.data };

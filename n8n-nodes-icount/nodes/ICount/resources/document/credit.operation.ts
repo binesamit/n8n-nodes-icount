@@ -123,6 +123,9 @@ export async function executeCredit(this: any, index: number): Promise<any> {
     }
 
     const body: any = {
+        cid: credentials.cid,
+        user: credentials.user,
+        pass: credentials.pass,
         doctype: 'refund', // Credit note
         origin_doc_id: originDocId,
         hwc: comments,
@@ -136,17 +139,13 @@ export async function executeCredit(this: any, index: number): Promise<any> {
     const response = await this.helpers.request({
         method: 'POST',
         url: 'https://api.icount.co.il/api/v3.php/doc/create',
-        headers: {
-            'Authorization': `Bearer ${credentials.token}`,
-            'Content-Type': 'application/json',
-        },
         body,
         json: true,
     });
 
     if (response.status === false) {
         const errorMsg = response.message || response.error || JSON.stringify(response);
-        throw new Error(`iCount API Error: ${errorMsg}` || 'Failed to create credit note');
+        throw new Error(`iCount API Error: ${errorMsg}`);
     }
 
     return {

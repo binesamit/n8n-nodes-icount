@@ -36,6 +36,31 @@ import {
 } from './resources/document/downloadPdf.operation';
 
 import {
+    documentCancelDescription,
+    executeCancel,
+} from './resources/document/cancel.operation';
+
+import {
+    documentCloseDescription,
+    executeClose,
+} from './resources/document/close.operation';
+
+import {
+    documentGetDocUrlDescription,
+    executeGetDocUrl,
+} from './resources/document/getDocUrl.operation';
+
+import {
+    documentSearchDescription,
+    executeSearch,
+} from './resources/document/search.operation';
+
+import {
+    documentInfoDescription,
+    executeInfo,
+} from './resources/document/info.operation';
+
+import {
     customerUpsertDescription,
     executeUpsert,
 } from './resources/customer/upsert.operation';
@@ -123,16 +148,46 @@ export class ICount implements INodeType {
                         action: 'Create a credit note',
                     },
                     {
+                        name: 'Cancel',
+                        value: 'cancel',
+                        description: 'ביטול מסמך',
+                        action: 'Cancel a document',
+                    },
+                    {
+                        name: 'Close',
+                        value: 'close',
+                        description: 'סגירת מסמך',
+                        action: 'Close a document',
+                    },
+                    {
                         name: 'Get',
                         value: 'get',
                         description: 'שליפת מסמך לפי ID',
                         action: 'Get a document',
                     },
                     {
+                        name: 'Info',
+                        value: 'info',
+                        description: 'מידע מפורט על מסמך',
+                        action: 'Get document info',
+                    },
+                    {
+                        name: 'Search',
+                        value: 'search',
+                        description: 'חיפוש מסמכים',
+                        action: 'Search documents',
+                    },
+                    {
                         name: 'List',
                         value: 'list',
                         description: 'רשימת מסמכים',
                         action: 'List documents',
+                    },
+                    {
+                        name: 'Get Document URL',
+                        value: 'getDocUrl',
+                        description: 'קבלת URL של מסמך',
+                        action: 'Get document URL',
                     },
                     {
                         name: 'Download PDF',
@@ -182,8 +237,13 @@ export class ICount implements INodeType {
             ...documentCreateDescription,
             ...documentUpdateDescription,
             ...documentCreditDescription,
+            ...documentCancelDescription,
+            ...documentCloseDescription,
             ...documentGetDescription,
+            ...documentInfoDescription,
+            ...documentSearchDescription,
             ...documentListDescription,
+            ...documentGetDocUrlDescription,
             ...documentDownloadPdfDescription,
             ...customerUpsertDescription,
             ...customerListDescription,
@@ -212,13 +272,29 @@ export class ICount implements INodeType {
                         case 'credit':
                             result = await executeCredit.call(this, i);
                             break;
+                        case 'cancel':
+                            result = await executeCancel.call(this, i);
+                            break;
+                        case 'close':
+                            result = await executeClose.call(this, i);
+                            break;
                         case 'get':
                             result = await executeGet.call(this, i);
                             break;
+                        case 'info':
+                            result = await executeInfo.call(this, i);
+                            break;
+                        case 'search':
+                            const searchResults = await executeSearch.call(this, i);
+                            returnData.push(...searchResults);
+                            continue;
                         case 'list':
                             const listResults = await executeList.call(this, i);
                             returnData.push(...listResults);
                             continue;
+                        case 'getDocUrl':
+                            result = await executeGetDocUrl.call(this, i);
+                            break;
                         case 'downloadPdf':
                             result = await executeDownloadPdf.call(this, i);
                             break;
