@@ -16,8 +16,8 @@ export const customerAddContactDescription: INodeProperties[] = [
 		description: 'מזהה הלקוח',
 	},
 	{
-		displayName: 'Contact Name',
-		name: 'contact_name',
+		displayName: 'First Name',
+		name: 'first_name',
 		type: 'string',
 		displayOptions: {
 			show: {
@@ -26,8 +26,33 @@ export const customerAddContactDescription: INodeProperties[] = [
 			},
 		},
 		default: '',
-		required: true,
-		description: 'שם איש הקשר',
+		description: 'שם פרטי',
+	},
+	{
+		displayName: 'Last Name',
+		name: 'last_name',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['addContact'],
+			},
+		},
+		default: '',
+		description: 'שם משפחה',
+	},
+	{
+		displayName: 'Company Name',
+		name: 'company_name',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['addContact'],
+			},
+		},
+		default: '',
+		description: 'שם חברה',
 	},
 	{
 		displayName: 'Contact Type',
@@ -137,7 +162,9 @@ export const customerAddContactDescription: INodeProperties[] = [
 
 export async function executeAddContact(this: any, index: number): Promise<any> {
 	const clientId = this.getNodeParameter('client_id', index) as number;
-	const contactName = this.getNodeParameter('contact_name', index) as string;
+	const firstName = this.getNodeParameter('first_name', index, '') as string;
+	const lastName = this.getNodeParameter('last_name', index, '') as string;
+	const companyName = this.getNodeParameter('company_name', index, '') as string;
 	const contactType = this.getNodeParameter('contact_type', index, 'PRIMARY') as string;
 	const email = this.getNodeParameter('email', index, '') as string;
 	const phone = this.getNodeParameter('phone', index, '') as string;
@@ -148,9 +175,13 @@ export async function executeAddContact(this: any, index: number): Promise<any> 
 
 	const body: any = {
 		client_id: clientId,
-		name: contactName,
 		contact_type: contactType,
 	};
+
+	// Add name fields - at least one is required for display
+	if (firstName) body.first_name = firstName;
+	if (lastName) body.last_name = lastName;
+	if (companyName) body.company_name = companyName;
 
 	// Add optional fields if provided
 	if (email) body.email = email;
