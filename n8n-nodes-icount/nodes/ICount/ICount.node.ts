@@ -431,9 +431,8 @@ export class ICount implements INodeType {
                         json: true,
                     });
 
-                    // The API might return an object with type IDs as keys and names as values
-                    // Or it might return an array of objects
-                    let typesData = response?.data || response?.types || response;
+                    // The API returns: { client_types: { "3": { client_type_id: 3, client_type_name: "...", ... } } }
+                    let typesData = response?.client_types || response?.data || response?.types || response;
 
                     if (!typesData) {
                         return [];
@@ -492,7 +491,7 @@ export class ICount implements INodeType {
                         json: true,
                     });
 
-                    let typesData = response?.data || response?.contact_types || response;
+                    let typesData = response?.contact_types || response?.data || response;
 
                     if (!typesData) {
                         return [];
