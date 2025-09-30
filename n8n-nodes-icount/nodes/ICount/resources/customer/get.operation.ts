@@ -21,17 +21,9 @@ export async function executeGet(this: any, index: number): Promise<any> {
     const credentials = await this.getCredentials('iCountApi');
     const clientId = this.getNodeParameter('client_id', index) as string;
 
-    const body = {
-        cid: credentials.cid,
-        user: credentials.user,
-        pass: credentials.pass,
-        client_id: clientId,
-    };
-
-    const response = await this.helpers.request({
-        method: 'POST',
-        url: 'https://api.icount.co.il/api/v3.php/client/info',
-        body,
+    const response = await this.helpers.requestWithAuthentication.call(this, 'iCountApi', {
+        method: 'GET',
+        url: `https://api.icount.co.il/api/v3.php/client/info/${clientId}`,
         json: true,
     });
 

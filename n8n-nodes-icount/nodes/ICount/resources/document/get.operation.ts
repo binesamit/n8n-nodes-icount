@@ -40,22 +40,12 @@ export const documentGetDescription: INodeProperties[] = [
 ];
 
 export async function executeGet(this: any, index: number): Promise<any> {
-    const credentials = await this.getCredentials('iCountApi');
     const doctype = this.getNodeParameter('doctype', index) as string;
     const docnum = this.getNodeParameter('docnum', index) as number;
 
-    const body = {
-        cid: credentials.cid,
-        user: credentials.user,
-        pass: credentials.pass,
-        doctype,
-        docnum,
-    };
-
-    const response = await this.helpers.request({
-        method: 'POST',
-        url: 'https://api.icount.co.il/api/v3.php/doc/info',
-        body,
+    const response = await this.helpers.requestWithAuthentication.call(this, 'iCountApi', {
+        method: 'GET',
+        url: `https://api.icount.co.il/api/v3.php/doc/info/${doctype}/${docnum}`,
         json: true,
     });
 

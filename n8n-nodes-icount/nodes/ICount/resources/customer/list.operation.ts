@@ -35,23 +35,12 @@ export const customerListDescription: INodeProperties[] = [
 ];
 
 export async function executeList(this: any, index: number): Promise<any> {
-    const credentials = await this.getCredentials('iCountApi');
     const returnAll = this.getNodeParameter('returnAll', index) as boolean;
+    let limit = returnAll ? 1000 : this.getNodeParameter('limit', index, 50) as number;
 
-    const body: any = {
-        cid: credentials.cid,
-        user: credentials.user,
-        pass: credentials.pass,
-    };
-
-    if (!returnAll) {
-        body.limit = this.getNodeParameter('limit', index, 50) as number;
-    }
-
-    const response = await this.helpers.request({
-        method: 'POST',
-        url: 'https://api.icount.co.il/api/v3.php/client/list',
-        body,
+    const response = await this.helpers.requestWithAuthentication.call(this, 'iCountApi', {
+        method: 'GET',
+        url: `https://api.icount.co.il/api/v3.php/client/list?limit=${limit}`,
         json: true,
     });
 
