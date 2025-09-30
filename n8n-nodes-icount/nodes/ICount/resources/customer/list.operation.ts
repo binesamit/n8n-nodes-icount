@@ -38,9 +38,14 @@ export async function executeList(this: any, index: number): Promise<any> {
     const returnAll = this.getNodeParameter('returnAll', index) as boolean;
     let limit = returnAll ? 1000 : this.getNodeParameter('limit', index, 50) as number;
 
+    const body = {
+        limit,
+    };
+
     const response = await this.helpers.requestWithAuthentication.call(this, 'iCountApi', {
-        method: 'GET',
-        url: `https://api.icount.co.il/api/v3.php/client/list?limit=${limit}`,
+        method: 'POST',
+        url: 'https://api.icount.co.il/api/v3.php/client/list',
+        body,
         json: true,
     });
 

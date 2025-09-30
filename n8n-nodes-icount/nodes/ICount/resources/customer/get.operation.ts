@@ -18,12 +18,16 @@ export const customerGetDescription: INodeProperties[] = [
 ];
 
 export async function executeGet(this: any, index: number): Promise<any> {
-    const credentials = await this.getCredentials('iCountApi');
     const clientId = this.getNodeParameter('client_id', index) as string;
 
+    const body = {
+        client_id: parseInt(clientId, 10),
+    };
+
     const response = await this.helpers.requestWithAuthentication.call(this, 'iCountApi', {
-        method: 'GET',
-        url: `https://api.icount.co.il/api/v3.php/client/info/${clientId}`,
+        method: 'POST',
+        url: 'https://api.icount.co.il/api/v3.php/client/info',
+        body,
         json: true,
     });
 
