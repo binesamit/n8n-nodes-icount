@@ -2,23 +2,6 @@ import { INodeProperties } from 'n8n-workflow';
 
 export const customerUpsertDescription: INodeProperties[] = [
     {
-        displayName: 'Search By',
-        name: 'search_by',
-        type: 'options',
-        displayOptions: {
-            show: {
-                resource: ['customer'],
-                operation: ['upsert'],
-            },
-        },
-        options: [
-            { name: 'HP Number', value: 'id_number' },
-            { name: 'Email', value: 'email' },
-        ],
-        default: 'id_number',
-        description: 'שדה לחיפוש לקוח קיים',
-    },
-    {
         displayName: 'Customer Name',
         name: 'name',
         type: 'string',
@@ -489,7 +472,6 @@ export const customerUpsertDescription: INodeProperties[] = [
 
 export async function executeUpsert(this: any, index: number): Promise<any> {
     const credentials = await this.getCredentials('iCountApi');
-    const searchBy = this.getNodeParameter('search_by', index) as string;
     const name = this.getNodeParameter('name', index) as string;
     const idNumber = this.getNodeParameter('id_number', index, '') as string;
     const email = this.getNodeParameter('email', index, '') as string;
@@ -587,71 +569,24 @@ export async function executeUpsert(this: any, index: number): Promise<any> {
     if (paymentTerms) customerData.payment_terms = paymentTerms;
     if (clientTypeDiscount) customerData.client_type_discount = clientTypeDiscount;
 
-    // Try to find existing customer
-    const searchValue = searchBy === 'id_number' ? idNumber : email;
-
-    const searchBody = {
-        [searchBy]: searchValue,
+    // Use create_or_update endpoint - it handles both create and update automatically
+    const body = {
+        ...customerData,
     };
-
-    let customerId = null;
-
-    try {
-        const searchResponse = await this.helpers.request({
-            method: 'POST',
-            url: 'https://api.icount.co.il/api/v3.php/client/find',
-            headers: {
-                'Authorization': `Bearer ${credentials.token}`,
-                'Content-Type': 'application/json',
-            },
-            body: searchBody,
-            json: true,
-        });
-
-        if (searchResponse.status && searchResponse.data) {
-            customerId = searchResponse.data.client_id;
-        }
-    } catch (error) {
-        // Customer not found, will create new
-    }
 
     let response;
 
     try {
-        if (customerId) {
-            // Update existing
-            const updateBody = {
-                client_id: customerId,
-                ...customerData,
-            };
-
-            response = await this.helpers.request({
-                method: 'POST',
-                url: 'https://api.icount.co.il/api/v3.php/client/update',
-                headers: {
-                    'Authorization': `Bearer ${credentials.token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: updateBody,
-                json: true,
-            });
-        } else {
-            // Create new
-            const createBody = {
-                ...customerData,
-            };
-
-            response = await this.helpers.request({
-                method: 'POST',
-                url: 'https://api.icount.co.il/api/v3.php/client/create',
-                headers: {
-                    'Authorization': `Bearer ${credentials.token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: createBody,
-                json: true,
-            });
-        }
+        response = await this.helpers.request({
+            method: 'POST',
+            url: 'https://api.icount.co.il/api/v3.php/client/create_or_update',
+            headers: {
+                'Authorization': `Bearer ${credentials.token}`,
+                'Content-Type': 'application/json',
+            },
+            body,
+            json: true,
+        });
     } catch (error: any) {
         const errorMessage = error.message || 'Unknown error';
         const errorDetails = error.response?.body || error.response || {};
@@ -668,8 +603,8 @@ export async function executeUpsert(this: any, index: number): Promise<any> {
     // If we got here, assume success and return the data
     return {
         json: {
-            action: customerId ? 'updated' : 'created',
-            customer_id: response?.data?.client_id || response?.client_id || customerId,
+            action: 'upserted',
+            customer_id: response?.data?.client_id || response?.client_id,
             ...(response?.data || response || {}),
         },
     };
