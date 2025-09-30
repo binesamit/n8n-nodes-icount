@@ -333,22 +333,26 @@ export class ICount implements INodeType {
                         json: true,
                     });
 
-                    // Try different possible response structures
-                    let banks = response?.data || response?.banks || response || [];
+                    // The API returns banks as an object where keys are bank IDs
+                    // For example: { "11": "בנק דיסקונט", "12": "בנק הפועלים", ... }
+                    let banksData = response?.data || response?.banks || response;
 
-                    // If banks is an object with numbered keys, convert to array
-                    if (typeof banks === 'object' && !Array.isArray(banks)) {
-                        banks = Object.values(banks);
-                    }
-
-                    if (!Array.isArray(banks) || banks.length === 0) {
+                    if (!banksData || typeof banksData !== 'object') {
                         return [];
                     }
 
-                    return banks.map((bank: any) => ({
-                        name: `${bank.bank_id || bank.id} - ${bank.bank_name || bank.name}`,
-                        value: String(bank.bank_id || bank.id),
-                    }));
+                    // Convert object to array of options
+                    const options: INodePropertyOptions[] = [];
+                    for (const [bankId, bankName] of Object.entries(banksData)) {
+                        if (typeof bankName === 'string') {
+                            options.push({
+                                name: `${bankId} - ${bankName}`,
+                                value: bankId,
+                            });
+                        }
+                    }
+
+                    return options;
                 } catch (error) {
                     return [];
                 }
@@ -369,22 +373,44 @@ export class ICount implements INodeType {
                         json: true,
                     });
 
-                    // Try different possible response structures
-                    let users = response?.data || response?.users || response || [];
+                    let usersData = response?.data || response?.users || response;
 
-                    // If users is an object with numbered keys, convert to array
-                    if (typeof users === 'object' && !Array.isArray(users)) {
-                        users = Object.values(users);
-                    }
-
-                    if (!Array.isArray(users) || users.length === 0) {
+                    if (!usersData) {
                         return [];
                     }
 
-                    return users.map((user: any) => ({
-                        name: user.user_name || user.name || user.email,
-                        value: String(user.user_id || user.id),
-                    }));
+                    const options: INodePropertyOptions[] = [];
+
+                    // If it's an object, convert to options
+                    if (typeof usersData === 'object' && !Array.isArray(usersData)) {
+                        for (const [userId, userData] of Object.entries(usersData)) {
+                            if (typeof userData === 'string') {
+                                options.push({
+                                    name: userData,
+                                    value: userId,
+                                });
+                            } else if (typeof userData === 'object' && userData !== null) {
+                                const userObj = userData as any;
+                                options.push({
+                                    name: userObj.user_name || userObj.name || userObj.email || userId,
+                                    value: String(userObj.user_id || userId),
+                                });
+                            }
+                        }
+                    }
+                    // If it's an array
+                    else if (Array.isArray(usersData)) {
+                        for (const user of usersData) {
+                            if (typeof user === 'object' && user !== null) {
+                                options.push({
+                                    name: user.user_name || user.name || user.email,
+                                    value: String(user.user_id || user.id),
+                                });
+                            }
+                        }
+                    }
+
+                    return options;
                 } catch (error) {
                     return [];
                 }
@@ -405,22 +431,47 @@ export class ICount implements INodeType {
                         json: true,
                     });
 
-                    // Try different possible response structures
-                    let types = response?.data || response?.types || response || [];
+                    // The API might return an object with type IDs as keys and names as values
+                    // Or it might return an array of objects
+                    let typesData = response?.data || response?.types || response;
 
-                    // If types is an object with numbered keys, convert to array
-                    if (typeof types === 'object' && !Array.isArray(types)) {
-                        types = Object.values(types);
-                    }
-
-                    if (!Array.isArray(types) || types.length === 0) {
+                    if (!typesData) {
                         return [];
                     }
 
-                    return types.map((type: any) => ({
-                        name: type.client_type_name || type.name,
-                        value: String(type.client_type_id || type.id),
-                    }));
+                    const options: INodePropertyOptions[] = [];
+
+                    // If it's an object (like banks), convert to options
+                    if (typeof typesData === 'object' && !Array.isArray(typesData)) {
+                        for (const [typeId, typeName] of Object.entries(typesData)) {
+                            if (typeof typeName === 'string') {
+                                options.push({
+                                    name: typeName,
+                                    value: typeId,
+                                });
+                            } else if (typeof typeName === 'object' && typeName !== null) {
+                                // If it's an object with properties
+                                const typeObj = typeName as any;
+                                options.push({
+                                    name: typeObj.client_type_name || typeObj.name || typeId,
+                                    value: String(typeObj.client_type_id || typeObj.id || typeId),
+                                });
+                            }
+                        }
+                    }
+                    // If it's an array of objects
+                    else if (Array.isArray(typesData)) {
+                        for (const type of typesData) {
+                            if (typeof type === 'object' && type !== null) {
+                                options.push({
+                                    name: type.client_type_name || type.name,
+                                    value: String(type.client_type_id || type.id),
+                                });
+                            }
+                        }
+                    }
+
+                    return options;
                 } catch (error) {
                     return [];
                 }
@@ -441,22 +492,44 @@ export class ICount implements INodeType {
                         json: true,
                     });
 
-                    // Try different possible response structures
-                    let types = response?.data || response?.contact_types || response || [];
+                    let typesData = response?.data || response?.contact_types || response;
 
-                    // If types is an object with numbered keys, convert to array
-                    if (typeof types === 'object' && !Array.isArray(types)) {
-                        types = Object.values(types);
-                    }
-
-                    if (!Array.isArray(types) || types.length === 0) {
+                    if (!typesData) {
                         return [];
                     }
 
-                    return types.map((type: any) => ({
-                        name: type.contact_type_name || type.name,
-                        value: String(type.contact_type_id || type.id),
-                    }));
+                    const options: INodePropertyOptions[] = [];
+
+                    // If it's an object, convert to options
+                    if (typeof typesData === 'object' && !Array.isArray(typesData)) {
+                        for (const [typeId, typeData] of Object.entries(typesData)) {
+                            if (typeof typeData === 'string') {
+                                options.push({
+                                    name: typeData,
+                                    value: typeId,
+                                });
+                            } else if (typeof typeData === 'object' && typeData !== null) {
+                                const typeObj = typeData as any;
+                                options.push({
+                                    name: typeObj.contact_type_name || typeObj.name || typeId,
+                                    value: String(typeObj.contact_type_id || typeId),
+                                });
+                            }
+                        }
+                    }
+                    // If it's an array
+                    else if (Array.isArray(typesData)) {
+                        for (const type of typesData) {
+                            if (typeof type === 'object' && type !== null) {
+                                options.push({
+                                    name: type.contact_type_name || type.name,
+                                    value: String(type.contact_type_id || type.id),
+                                });
+                            }
+                        }
+                    }
+
+                    return options;
                 } catch (error) {
                     return [];
                 }
