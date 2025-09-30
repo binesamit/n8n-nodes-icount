@@ -1,0 +1,56 @@
+{
+  "name": "n8n-nodes-icount",
+  "version": "1.0.20",
+  "description": "n8n node for iCount Israeli accounting system",
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n",
+    "icount",
+    "accounting",
+    "israel",
+    "invoices"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/bines/n8n-nodes-icount",
+  "author": {
+    "name": "Amit Bines",
+    "email": "binesamit@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bines/n8n-nodes-icount.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && npm run copy-icons",
+    "copy-icons": "cp nodes/ICount/*.svg dist/nodes/ICount/ || true",
+    "dev": "tsc --watch",
+    "format": "prettier nodes credentials --write",
+    "lint": "eslint nodes credentials package.json",
+    "lintfix": "eslint nodes credentials package.json --fix",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/ICountApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/ICount/ICount.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint-plugin-n8n-nodes-base": "^1.11.0",
+    "gulp": "^4.0.2",
+    "n8n-workflow": "^1.0.0",
+    "prettier": "^2.7.1",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "n8n-workflow": "^1.0.0"
+  }
+}

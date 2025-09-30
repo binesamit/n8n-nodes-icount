@@ -1,0 +1,23 @@
+# Source files
+nodes/**/*.ts
+credentials/**/*.ts
+!nodes/**/*.node.json
+
+# Development files
+tsconfig.json
+.vscode/
+.idea/
+.DS_Store
+
+# Tests
+test/
+tests/
+*.test.ts
+*.spec.ts
+
+# Other
+.git/
+.gitignore
+node_modules/
+*.log
+.env
