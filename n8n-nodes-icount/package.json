@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-icount",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "description": "n8n node for iCount Israeli accounting system",
   "keywords": [
     "n8n-community-node-package",

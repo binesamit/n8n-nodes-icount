@@ -38,14 +38,11 @@ export async function executeList(this: any, index: number): Promise<any> {
     const returnAll = this.getNodeParameter('returnAll', index) as boolean;
     let limit = returnAll ? 1000 : this.getNodeParameter('limit', index, 50) as number;
 
-    const body = {
-        max_results: limit,
-    };
+    const body = {};
 
     const response = await this.helpers.requestWithAuthentication.call(this, 'iCountApi', {
-        method: 'POST',
-        url: 'https://api.icount.co.il/api/v3.php/client/search',
-        body,
+        method: 'GET',
+        url: 'https://api.icount.co.il/api/v3.php/client',
         json: true,
     });
 
@@ -54,7 +51,17 @@ export async function executeList(this: any, index: number): Promise<any> {
         throw new Error(`iCount API Error: ${errorMsg}`);
     }
 
-    const customers = response.data || [];
+    let customers = response.data || response || [];
+
+    // If not array, might be wrapped
+    if (!Array.isArray(customers) && customers.clients) {
+        customers = customers.clients;
+    }
+
+    // Limit results if needed
+    if (!returnAll && Array.isArray(customers)) {
+        customers = customers.slice(0, limit);
+    }
 
     return customers.map((customer: any) => ({ json: customer }));
 }
