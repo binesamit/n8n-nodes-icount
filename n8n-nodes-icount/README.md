@@ -55,15 +55,8 @@
 **מתי להשתמש:** כשאתה רוצה ליצור חשבונית, קבלה, הצעת מחיר או מסמך אחר.
 
 **שדות חובה:**
-- **Document Type (סוג מסמך):**
-  - `invoice` - חשבונית מס
-  - `invrec` - חשבונית מס קבלה
-  - `receipt` - קבלה
-  - `refund` - חשבונית זיכוי
-  - `order` - הזמנה
-  - `offer` - הצעת מחיר
-  - `delivery` - תעודת משלוח
-  - `deal` - עסקה
+- **Document Type (סוג מסמך):** נטען דינמית מה-API - בחר מתוך הרשימה המתעדכנת
+  - כולל: חשבונית מס, חשבונית מס קבלה, קבלה, הזמנה, הצעת מחיר, תעודת משלוח ועוד
 
 - **Client Name (שם לקוח):** שם מלא של הלקוח
 
@@ -100,30 +93,61 @@ Items:
 
 ---
 
-### 2. Update - עדכון מסמך קיים
+### 2. Convert - המרת מסמך
 
-**מתי להשתמש:** כשאתה רוצה לשנות פרטים במסמך קיים שעדיין לא סגור.
+**מתי להשתמש:** כשאתה רוצה להמיר מסמך מסוג אחד לסוג אחר (למשל, הצעת מחיר להזמנה).
 
 **שדות חובה:**
-- **Document Type:** סוג המסמך (invoice, invrec, וכו')
-- **Document Number:** מספר המסמך לעדכון
+- **Document Type:** סוג המסמך הנוכחי (נטען דינמית מה-API)
+- **Document Number:** מספר המסמך להמרה
 
-**שדות לעדכון:**
-- **Client Name:** שם לקוח חדש
-- **Items:** פריטים חדשים (יחליפו את הקיימים)
-- **Email, Phone, Address:** פרטי קשר מעודכנים
+**שדות:**
+- **Get Conversion Options:**
+  - `ON` (ברירת מחדל) - מחזיר את רשימת אפשרויות ההמרה האפשריות
+  - `OFF` - מבצע המרה (צריך לספק Conversion Type)
+- **Conversion Type:** סוג ההמרה (רק כאשר Get Conversion Options כבוי)
 
-**דוגמה:**
+**דוגמה - קבלת אפשרויות:**
 ```
-Document Type: invoice
-Document Number: 2007
-Client Name: עמית כהן (עודכן)
-Email: amit.new@example.com
+Document Type: 300 (הצעת מחיר)
+Document Number: 1001
+Get Conversion Options: ON
+```
+
+**דוגמה - ביצוע המרה:**
+```
+Document Type: 300 (הצעת מחיר)
+Document Number: 1001
+Get Conversion Options: OFF
+Conversion Type: order
 ```
 
 ---
 
-### 3. Cancel - ביטול מסמך
+### 3. Update Income Type - עדכון סוג הכנסה למסמך
+
+**מתי להשתמש:** כשאתה רוצה לשנות את סוג ההכנסה המיוחס למסמך (לצורכי דיווח).
+
+**שדות חובה:**
+- **Document Type:** סוג המסמך (נטען דינמית מה-API)
+- **Document Number:** מספר המסמך
+
+**שדות:**
+- **Income Type:** בחירה בין ID או Name
+  - `Income Type ID` - מזהה מספרי של סוג ההכנסה
+  - `Income Type Name` - שם סוג ההכנסה (אם לא קיים, יווצר אוטומטית)
+
+**דוגמה:**
+```
+Document Type: 320 (חשבונית מס)
+Document Number: 2007
+Income Type: Income Type Name
+Income Type Name: ייעוץ טכני
+```
+
+---
+
+### 4. Cancel - ביטול מסמך
 
 **מתי להשתמש:** כשאתה רוצה לבטל מסמך (ייווצר מסמך ביטול במערכת).
 
@@ -149,7 +173,7 @@ Cancellation Reason: הלקוח ביקש לבטל
 
 ---
 
-### 4. Close - סגירת מסמך
+### 5. Close - סגירת מסמך
 
 **מתי להשתמש:** כשאתה רוצה לסגור מסמך (למשל, לסמן הזמנה כ"הושלמה").
 
@@ -169,7 +193,7 @@ Based On Documents: [{"doctype": "offer", "docnum": 500}]
 
 ---
 
-### 5. Get - קבלת מסמך ספציפי
+### 6. Get - קבלת מסמך ספציפי
 
 **מתי להשתמש:** כשאתה רוצה לקבל את כל הפרטים של מסמך מסוים.
 
@@ -192,7 +216,7 @@ Document Number: 2007
 
 ---
 
-### 6. Search - חיפוש מסמכים
+### 7. Search - חיפוש מסמכים
 
 **מתי להשתמש:** כשאתה רוצה למצוא מסמכים לפי קריטריונים שונים.
 
@@ -232,23 +256,29 @@ Filters:
 
 ---
 
-### 7. List - רשימת מסמכים
+### 8. List - רשימת מסמכים
 
 **מתי להשתמש:** כשאתה רוצה לקבל רשימה של כל המסמכים (ללא פילטרים).
 
 **שדות:**
 - **Return All:** האם להחזיר הכל
 - **Limit:** מספר מקסימלי של תוצאות
+- **Additional Fields:**
+  - **Combine All Items:**
+    - `OFF` (ברירת מחדל) - כל מסמך כ-item נפרד
+    - `ON` - כל המסמכים באייטם אחד
 
 **דוגמה:**
 ```
 Return All: false
 Limit: 50
+Additional Fields:
+  Combine All Items: OFF
 ```
 
 ---
 
-### 8. Get Document URL - קבלת קישור למסמך
+### 9. Get Document URL - קבלת קישור למסמך
 
 **מתי להשתמש:** כשאתה רוצה לקבל קישור לצפייה במסמך (PDF) ללא הורדה.
 
@@ -278,7 +308,60 @@ Original Document: true
 
 ## פעולות Customer (לקוחות)
 
-### 1. Upsert - יצירה או עדכון לקוח
+### 1. Create - יצירת לקוח חדש
+
+**מתי להשתמש:** כשאתה רוצה ליצור לקוח חדש במערכת.
+
+**שדות חובה:**
+- **Client Name:** שם הלקוח
+
+**שדות אופציונליים:**
+- **Email:** מייל
+- **Phone:** טלפון
+- **Mobile:** נייד
+- **HP Number (ח.פ/ת.ז):** מספר ח.פ או ת.ז (נשמר בשדה `vat_id`)
+- **Client Type:** סוג לקוח (נטען דינמית מה-API)
+- **Bank:** בנק (נטען דינמית מה-API)
+- **Employee Assigned:** עובד מטפל (נטען דינמית מה-API)
+- **Address, City, Zip:** כתובת מלאה
+- **Home Address Fields:** כתובת מגורים מלאה
+- **Payment Terms:** תנאי תשלום (בימים)
+
+**דוגמה:**
+```
+Client Name: חברת הדוגמה בע"מ
+Email: info@example.co.il
+Phone: 03-1234567
+Mobile: 050-1234567
+HP Number: 123456789
+Client Type: חברה
+Bank: בנק לאומי
+City: תל אביב
+Payment Terms: 30
+```
+
+---
+
+### 2. Update - עדכון לקוח קיים
+
+**מתי להשתמש:** כשאתה רוצה לעדכן פרטי לקוח קיים.
+
+**שדות חובה:**
+- **Client ID:** מזהה הלקוח
+
+**שדות לעדכון:**
+- כל השדות זמינים לעדכון (Email, Phone, Address, וכו')
+
+**דוגמה:**
+```
+Client ID: 123
+Email: new-email@example.co.il
+Phone: 03-9999999
+```
+
+---
+
+### 3. Upsert - יצירה או עדכון לקוח
 
 **מתי להשתמש:** כשאתה רוצה להוסיף לקוח חדש או לעדכן קיים.
 
@@ -317,7 +400,7 @@ Payment Terms: 30
 
 ---
 
-### 2. Get - קבלת לקוח לפי מזהה
+### 4. Get - קבלת לקוח לפי מזהה
 
 **מתי להשתמש:** כשיש לך מזהה לקוח ואתה רוצה לקבל את כל הפרטים שלו.
 
@@ -336,17 +419,37 @@ Client ID: 2
 
 ---
 
-### 3. List - רשימת לקוחות
+### 5. Delete - מחיקת לקוח
+
+**מתי להשתמש:** כשאתה רוצה למחוק לקוח מהמערכת.
+
+**שדות חובה:**
+- **Client ID:** מזהה הלקוח למחיקה
+
+**דוגמה:**
+```
+Client ID: 123
+```
+
+---
+
+### 6. List - רשימת לקוחות
 
 **מתי להשתמש:** כשאתה רוצה לקבל רשימה של כל הלקוחות במערכת.
 
 **שדות:**
 - **Return All:** האם להחזיר את כל הלקוחות
 - **Limit:** מספר מקסימלי (אם Return All כבוי)
+- **Additional Fields:**
+  - **Combine All Items:**
+    - `OFF` (ברירת מחדל) - כל לקוח כ-item נפרד
+    - `ON` - כל הלקוחות באייטם אחד
 
 **דוגמה:**
 ```
 Return All: true
+Additional Fields:
+  Combine All Items: OFF
 ```
 
 **פלט:**
@@ -354,7 +457,7 @@ Return All: true
 
 ---
 
-### 4. Get Open Docs - קבלת מסמכים פתוחים ללקוחות
+### 7. Get Open Docs - קבלת מסמכים פתוחים ללקוחות
 
 **מתי להשתמש:** כשאתה רוצה לראות אילו לקוחות יש להם מסמכים פתוחים (חובות).
 
@@ -382,6 +485,104 @@ Options:
 - רשימת מסמכים פתוחים
 - סכומים לתשלום
 - פרטי לקוחות
+
+---
+
+### 8. Get Contacts - קבלת אנשי קשר של לקוח
+
+**מתי להשתמש:** כשאתה רוצה לקבל רשימת אנשי קשר של לקוח ספציפי.
+
+**שדות חובה:**
+- **Client ID:** מזהה הלקוח
+
+**דוגמה:**
+```
+Client ID: 123
+```
+
+**פלט:**
+- רשימת אנשי קשר עם כל הפרטים
+
+---
+
+### 9. Add Contact - הוספת איש קשר ללקוח
+
+**מתי להשתמש:** כשאתה רוצה להוסיף איש קשר חדש ללקוח קיים.
+
+**שדות חובה:**
+- **Client ID:** מזהה הלקוח
+- **Contact Name:** שם איש הקשר
+
+**שדות אופציונליים:**
+- **Contact Type:** סוג איש הקשר (נטען דינמית מה-API)
+- **Email:** מייל
+- **Phone:** טלפון
+- **Mobile:** נייד
+- **Notes:** הערות
+
+**דוגמה:**
+```
+Client ID: 123
+Contact Name: יוסי כהן
+Contact Type: איש קשר ראשי
+Email: yossi@example.com
+Phone: 03-1234567
+```
+
+---
+
+### 10. Update Contact - עדכון איש קשר
+
+**מתי להשתמש:** כשאתה רוצה לעדכן פרטי איש קשר קיים.
+
+**שדות חובה:**
+- **Client ID:** מזהה הלקוח
+- **Contact ID:** מזהה איש הקשר
+
+**שדות לעדכון:**
+- **Contact Name:** שם חדש
+- **Contact Type:** סוג חדש (נטען דינמית מה-API)
+- **Email, Phone, Mobile:** פרטי קשר מעודכנים
+
+**דוגמה:**
+```
+Client ID: 123
+Contact ID: 456
+Contact Name: יוסי כהן (עודכן)
+Email: yossi.new@example.com
+```
+
+---
+
+### 11. Delete Contact - מחיקת איש קשר
+
+**מתי להשתמש:** כשאתה רוצה למחוק איש קשר מלקוח.
+
+**שדות חובה:**
+- **Client ID:** מזהה הלקוח
+- **Contact ID:** מזהה איש הקשר למחיקה
+
+**דוגמה:**
+```
+Client ID: 123
+Contact ID: 456
+```
+
+---
+
+## תכונות מיוחדות
+
+### Dynamic Dropdowns (רשימות דינמיות)
+
+הנוד תומך ב-dropdowns שנטענים אוטומטית מה-API של iCount:
+
+- **Document Type (סוג מסמך)** - בנודים: Create, Convert, Update Income Type
+- **Bank (בנק)** - בנודים: Create Customer, Update Customer, Upsert Customer
+- **Employee Assigned (עובד מטפל)** - בנודים: Create Customer, Update Customer, Upsert Customer
+- **Client Type (סוג לקוח)** - בנודים: Create Customer, Update Customer, Upsert Customer
+- **Contact Type (סוג איש קשר)** - בנודים: Add Contact, Update Contact
+
+כל הרשימות מתעדכנות אוטומטית בהתאם למה שמוגדר במערכת iCount שלך.
 
 ---
 
@@ -536,6 +737,38 @@ MIT
 
 ---
 
-**גרסה נוכחית:** 1.0.33
+**גרסה נוכחית:** 1.0.51
 
 **עדכון אחרון:** ינואר 2025
+
+## היסטוריית גרסאות
+
+### v1.0.51 (אחרון)
+- ✅ תיקון Document Types dropdown - קריאה נכונה מהשדה `doctypes`
+- ✅ הוספת dynamic dropdowns ל-Convert Document ו-Update Income Type
+
+### v1.0.50
+- ✅ הוספת dynamic dropdown לסוגי מסמכים (Document Types)
+- ✅ הוספת נוד Convert Document - המרת מסמכים
+- ✅ הוספת נוד Update Income Type - עדכון סוג הכנסה
+- ✅ הסרת נוד Update Document (לא עובד ב-API)
+
+### v1.0.49
+- ✅ הוספת אפשרות Combine All Items ב-List operations
+- ✅ אפשרות לקבל כל הפריטים באייטם אחד או כל פריט בנפרד
+
+### v1.0.48
+- ✅ תיקון List operations להחזרת כל פריט בנפרד
+- ✅ טיפול נכון באובייקטים שמחזיר ה-API
+
+### v1.0.47
+- ✅ שחזור שדות Home Address ללקוחות
+- ✅ תיקון שמירת HP/VAT ID (שימוש ב-vat_id)
+
+### v1.0.42-45
+- ✅ הוספת dynamic dropdowns: Bank, Employee Assigned, Client Type, Contact Type
+- ✅ תיקון טיפול באובייקטים מה-API
+
+### גרסאות קודמות
+- תמיכה בסיסית במסמכים ולקוחות
+- פעולות CRUD בסיסיות
