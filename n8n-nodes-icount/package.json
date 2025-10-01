@@ -11,14 +11,14 @@
     "invoices"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/bines/n8n-nodes-icount",
+  "homepage": "https://github.com/binesamit/n8n-nodes-icount",
   "author": {
     "name": "Amit Bines",
     "email": "binesamit@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bines/n8n-nodes-icount.git"
+    "url": "git+https://github.com/binesamit/n8n-nodes-icount.git"
   },
   "main": "index.js",
   "scripts": {
