@@ -721,7 +721,7 @@ Use a Set node to save IDs:
 
 ## Additional Resources
 
-- [iCount API Documentation](https://apiv3.icount.co.il/docs)
+- [iCount API Documentation (official)](https://apiv3.icount.co.il/docs/iCount/)
 - [n8n Documentation](https://docs.n8n.io/)
 - [Workflow Examples](https://n8n.io/workflows)
 
@@ -742,6 +742,9 @@ Use it at your own risk.
 
 The purpose of this repository is to share knowledge and provide tools for the community.
 The maintainers are not responsible for any issues, damages, or losses caused by the use of this code.
+
+For the official iCount API documentation, please refer to:
+👉 [https://apiv3.icount.co.il/docs/iCount/](https://apiv3.icount.co.il/docs/iCount/)
 
 ---
 
