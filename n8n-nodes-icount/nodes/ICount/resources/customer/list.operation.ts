@@ -55,11 +55,19 @@ export async function executeList(this: any, index: number): Promise<any> {
     }
 
     // Try different response structures
-    let customers = response.data?.data || response.data || response.clients || response || [];
+    let customersData = response.data?.data || response.data || response.clients || response;
 
-    // Ensure it's an array
-    if (!Array.isArray(customers)) {
-        customers = [];
+    let customers: any[] = [];
+
+    // Check if it's already an array
+    if (Array.isArray(customersData)) {
+        customers = customersData;
+    }
+    // If it's an object (like { "123": {...}, "456": {...} }), convert to array
+    else if (customersData && typeof customersData === 'object') {
+        customers = Object.values(customersData).filter(item =>
+            item && typeof item === 'object' && !Array.isArray(item)
+        );
     }
 
     // If still empty, check if we need to return the response as-is for debugging

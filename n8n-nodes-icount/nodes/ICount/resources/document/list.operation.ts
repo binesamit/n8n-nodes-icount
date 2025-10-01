@@ -109,7 +109,21 @@ export async function executeList(this: any, index: number): Promise<any> {
         throw new Error(`iCount API Error: ${errorMsg}`);
     }
 
-    const documents = response.data.documents || [];
+    // Try different response structures
+    let documentsData = response.data?.documents || response.documents || response.data || response;
+
+    let documents: any[] = [];
+
+    // Check if it's already an array
+    if (Array.isArray(documentsData)) {
+        documents = documentsData;
+    }
+    // If it's an object (like { "123": {...}, "456": {...} }), convert to array
+    else if (documentsData && typeof documentsData === 'object') {
+        documents = Object.values(documentsData).filter(item =>
+            item && typeof item === 'object' && !Array.isArray(item)
+        );
+    }
 
     return documents.map((doc: any) => ({ json: doc }));
 }
