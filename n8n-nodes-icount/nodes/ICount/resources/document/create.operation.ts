@@ -7,23 +7,16 @@ export const documentCreateDescription: INodeProperties[] = [
         displayName: 'Document Type',
         name: 'doc_type',
         type: 'options',
+        typeOptions: {
+            loadOptionsMethod: 'getDocumentTypes',
+        },
         displayOptions: {
             show: {
                 resource: ['document'],
                 operation: ['create'],
             },
         },
-        options: [
-            { name: 'חשבונית מס קבלה (Invoice Receipt)', value: 'invrec' },
-            { name: 'חשבונית מס (Tax Invoice)', value: 'invoice' },
-            { name: 'קבלה (Receipt)', value: 'receipt' },
-            { name: 'חשבונית זיכוי (Credit Note/Refund)', value: 'refund' },
-            { name: 'חשבון עסקה (Transaction Account)', value: 'deal' },
-            { name: 'הצעת מחיר (Price Quote)', value: 'offer' },
-            { name: 'הזמנה (Order)', value: 'order' },
-            { name: 'תעודת משלוח (Delivery Note)', value: 'delivery' },
-        ],
-        default: 'invrec',
+        default: '',
         required: true,
         description: 'סוג המסמך להנפקה',
     },

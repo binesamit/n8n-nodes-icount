@@ -13,9 +13,14 @@ import {
 } from './resources/document/create.operation';
 
 import {
-    documentUpdateDescription,
-    executeUpdate,
-} from './resources/document/update.operation';
+    documentConvertDescription,
+    executeConvert,
+} from './resources/document/convert.operation';
+
+import {
+    documentUpdateIncomeTypeDescription,
+    executeUpdateIncomeType,
+} from './resources/document/updateIncomeType.operation';
 
 
 import {
@@ -166,10 +171,16 @@ export class ICount implements INodeType {
                         action: 'Create a document',
                     },
                     {
-                        name: 'Update',
-                        value: 'update',
-                        description: 'עדכון מסמך קיים',
-                        action: 'Update a document',
+                        name: 'Convert',
+                        value: 'convert',
+                        description: 'המרת מסמך',
+                        action: 'Convert a document',
+                    },
+                    {
+                        name: 'Update Income Type',
+                        value: 'updateIncomeType',
+                        description: 'עדכון סוג הכנסה למסמך',
+                        action: 'Update document income type',
                     },
                     {
                         name: 'Cancel',
@@ -295,7 +306,8 @@ export class ICount implements INodeType {
 
             // ========== Operation Fields ==========
             ...documentCreateDescription,
-            ...documentUpdateDescription,
+            ...documentConvertDescription,
+            ...documentUpdateIncomeTypeDescription,
             ...documentCancelDescription,
             ...documentCloseDescription,
             ...documentGetDescription,
@@ -533,6 +545,64 @@ export class ICount implements INodeType {
                     return [];
                 }
             },
+
+            // Get list of document types
+            async getDocumentTypes(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+                const credentials = await this.getCredentials('iCountApi');
+
+                try {
+                    const response = await this.helpers.request({
+                        method: 'POST',
+                        url: 'https://api.icount.co.il/api/v3.php/doc/types',
+                        headers: {
+                            'Authorization': `Bearer ${credentials.token}`,
+                            'Content-Type': 'application/json',
+                        },
+                        json: true,
+                    });
+
+                    let typesData = response?.data || response?.types || response;
+
+                    if (!typesData) {
+                        return [];
+                    }
+
+                    const options: INodePropertyOptions[] = [];
+
+                    // If it's an object, convert to options
+                    if (typeof typesData === 'object' && !Array.isArray(typesData)) {
+                        for (const [typeId, typeName] of Object.entries(typesData)) {
+                            if (typeof typeName === 'string') {
+                                options.push({
+                                    name: typeName,
+                                    value: typeId,
+                                });
+                            } else if (typeof typeName === 'object' && typeName !== null) {
+                                const typeObj = typeName as any;
+                                options.push({
+                                    name: typeObj.name || typeObj.doc_type_name || typeId,
+                                    value: String(typeObj.id || typeObj.doc_type_id || typeId),
+                                });
+                            }
+                        }
+                    }
+                    // If it's an array
+                    else if (Array.isArray(typesData)) {
+                        for (const type of typesData) {
+                            if (typeof type === 'object' && type !== null) {
+                                options.push({
+                                    name: type.name || type.doc_type_name,
+                                    value: String(type.id || type.doc_type_id),
+                                });
+                            }
+                        }
+                    }
+
+                    return options;
+                } catch (error) {
+                    return [];
+                }
+            },
         },
     };
 
@@ -551,8 +621,11 @@ export class ICount implements INodeType {
                         case 'create':
                             result = await executeCreate.call(this, i);
                             break;
-                        case 'update':
-                            result = await executeUpdate.call(this, i);
+                        case 'convert':
+                            result = await executeConvert.call(this, i);
+                            break;
+                        case 'updateIncomeType':
+                            result = await executeUpdateIncomeType.call(this, i);
                             break;
                         case 'cancel':
                             result = await executeCancel.call(this, i);
