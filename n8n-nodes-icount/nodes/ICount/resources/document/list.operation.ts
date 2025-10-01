@@ -77,6 +77,13 @@ export const documentListDescription: INodeProperties[] = [
                 type: 'string',
                 default: '',
             },
+            {
+                displayName: 'Combine All Items',
+                name: 'combineAllItems',
+                type: 'boolean',
+                default: false,
+                description: 'Whether to return all documents in a single item (ON) or each document as a separate item (OFF)',
+            },
         ],
     },
 ];
@@ -85,12 +92,16 @@ export async function executeList(this: any, index: number): Promise<any> {
     const credentials = await this.getCredentials('iCountApi');
     const returnAll = this.getNodeParameter('returnAll', index) as boolean;
     const filters = this.getNodeParameter('filters', index, {}) as any;
+    const combineAllItems = filters.combineAllItems || false;
+
+    // Remove combineAllItems from filters before sending to API
+    const { combineAllItems: _, ...apiFilters } = filters;
 
     const body: any = {
         cid: credentials.cid,
         user: credentials.user,
         pass: credentials.pass,
-        ...filters,
+        ...apiFilters,
     };
 
     if (!returnAll) {
@@ -125,5 +136,11 @@ export async function executeList(this: any, index: number): Promise<any> {
         );
     }
 
+    // If combineAllItems is enabled, return all documents in a single item
+    if (combineAllItems) {
+        return [{ json: { documents: documents } }];
+    }
+
+    // Otherwise, return each document as a separate item
     return documents.map((doc: any) => ({ json: doc }));
 }

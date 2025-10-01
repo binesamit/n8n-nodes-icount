@@ -32,11 +32,35 @@ export const customerListDescription: INodeProperties[] = [
         default: 50,
         description: 'מספר התוצאות להחזיר',
     },
+    {
+        displayName: 'Additional Fields',
+        name: 'additionalFields',
+        type: 'collection',
+        placeholder: 'Add Field',
+        displayOptions: {
+            show: {
+                resource: ['customer'],
+                operation: ['list'],
+            },
+        },
+        default: {},
+        options: [
+            {
+                displayName: 'Combine All Items',
+                name: 'combineAllItems',
+                type: 'boolean',
+                default: false,
+                description: 'Whether to return all customers in a single item (ON) or each customer as a separate item (OFF)',
+            },
+        ],
+    },
 ];
 
 export async function executeList(this: any, index: number): Promise<any> {
     const returnAll = this.getNodeParameter('returnAll', index) as boolean;
     let limit = returnAll ? 1000 : this.getNodeParameter('limit', index, 50) as number;
+    const additionalFields = this.getNodeParameter('additionalFields', index, {}) as any;
+    const combineAllItems = additionalFields.combineAllItems || false;
 
     const body = {
         detail_level: 10, // Full details
@@ -81,5 +105,11 @@ export async function executeList(this: any, index: number): Promise<any> {
         customers = customers.slice(0, limit);
     }
 
+    // If combineAllItems is enabled, return all customers in a single item
+    if (combineAllItems) {
+        return [{ json: { customers: customers } }];
+    }
+
+    // Otherwise, return each customer as a separate item
     return customers.map((customer: any) => ({ json: customer }));
 }
