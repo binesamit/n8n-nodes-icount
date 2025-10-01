@@ -71,7 +71,7 @@ Manage customers - create, update, retrieve, and list.
 - **Description:** Item description
 - **Quantity:** Quantity
 - **Unit Price:** Unit price
-- **VAT:** VAT percentage (default: 17)
+- **VAT:** VAT percentage (default: 18)
 
 **Example:**
 ```
@@ -83,7 +83,7 @@ Items:
   - Description: Consulting Services
     Quantity: 10
     Unit Price: 500
-    VAT: 17
+    VAT: 18
 ```
 
 **Output:**
@@ -693,7 +693,7 @@ All lists update automatically based on what's configured in your iCount system.
 {{ $now.format('yyyy-MM-dd') }}
 
 // Calculate total
-{{ $json.quantity * $json.price * 1.17 }}
+{{ $json.quantity * $json.price * 1.18 }}
 
 // String concatenation
 {{ "Invoice for customer " + $json.client_name }}
