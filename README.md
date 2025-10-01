@@ -735,6 +735,14 @@ For issues and questions:
 
 MIT
 
+## Disclaimer
+
+This project is provided "as is", without any warranty of any kind, express or implied.
+Use it at your own risk.
+
+The purpose of this repository is to share knowledge and provide tools for the community.
+The maintainers are not responsible for any issues, damages, or losses caused by the use of this code.
+
 ---
 
 **Current Version:** 1.0.54
