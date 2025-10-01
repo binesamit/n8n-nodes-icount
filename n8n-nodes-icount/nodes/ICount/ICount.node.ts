@@ -561,7 +561,8 @@ export class ICount implements INodeType {
                         json: true,
                     });
 
-                    let typesData = response?.data || response?.types || response;
+                    // The API returns: { doctypes: { "320": "חשבונית מס", ... } }
+                    let typesData = response?.doctypes || response?.data || response?.types || response;
 
                     if (!typesData) {
                         return [];
@@ -572,6 +573,11 @@ export class ICount implements INodeType {
                     // If it's an object, convert to options
                     if (typeof typesData === 'object' && !Array.isArray(typesData)) {
                         for (const [typeId, typeName] of Object.entries(typesData)) {
+                            // Skip metadata fields
+                            if (typeId === 'api' || typeId === 'status' || typeof typeName !== 'string' && typeof typeName !== 'object') {
+                                continue;
+                            }
+
                             if (typeof typeName === 'string') {
                                 options.push({
                                     name: typeName,

@@ -4,7 +4,10 @@ export const documentConvertDescription: INodeProperties[] = [
     {
         displayName: 'Document Type',
         name: 'doctype',
-        type: 'string',
+        type: 'options',
+        typeOptions: {
+            loadOptionsMethod: 'getDocumentTypes',
+        },
         displayOptions: {
             show: {
                 resource: ['document'],
@@ -13,7 +16,7 @@ export const documentConvertDescription: INodeProperties[] = [
         },
         default: '',
         required: true,
-        description: 'סוג המסמך הנוכחי (לדוגמה: 320 לחשבונית מס)',
+        description: 'סוג המסמך הנוכחי',
     },
     {
         displayName: 'Document Number',

@@ -4,7 +4,10 @@ export const documentUpdateIncomeTypeDescription: INodeProperties[] = [
     {
         displayName: 'Document Type',
         name: 'doctype',
-        type: 'string',
+        type: 'options',
+        typeOptions: {
+            loadOptionsMethod: 'getDocumentTypes',
+        },
         displayOptions: {
             show: {
                 resource: ['document'],
@@ -13,7 +16,7 @@ export const documentUpdateIncomeTypeDescription: INodeProperties[] = [
         },
         default: '',
         required: true,
-        description: 'סוג המסמך (לדוגמה: 320 לחשבונית מס)',
+        description: 'סוג המסמך',
     },
     {
         displayName: 'Document Number',
