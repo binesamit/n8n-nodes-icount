@@ -237,6 +237,84 @@ export const customerUpdateDescription: INodeProperties[] = [
 		description: 'מספר בית - כתובת עסק',
 	},
 	{
+		displayName: 'Home Country',
+		name: 'home_country',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['update'],
+			},
+		},
+		default: '',
+		description: 'מדינה - כתובת מגורים',
+	},
+	{
+		displayName: 'Home State',
+		name: 'home_state',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['update'],
+			},
+		},
+		default: '',
+		description: 'מחוז/אזור - כתובת מגורים',
+	},
+	{
+		displayName: 'Home City',
+		name: 'home_city',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['update'],
+			},
+		},
+		default: '',
+		description: 'עיר - כתובת מגורים',
+	},
+	{
+		displayName: 'Home ZIP',
+		name: 'home_zip',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['update'],
+			},
+		},
+		default: '',
+		description: 'מיקוד - כתובת מגורים',
+	},
+	{
+		displayName: 'Home Street',
+		name: 'home_street',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['update'],
+			},
+		},
+		default: '',
+		description: 'רחוב - כתובת מגורים',
+	},
+	{
+		displayName: 'Home Street Number',
+		name: 'home_no',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['update'],
+			},
+		},
+		default: '',
+		description: 'מספר בית - כתובת מגורים',
+	},
+	{
 		displayName: 'Bank',
 		name: 'bank',
 		type: 'options',
@@ -423,6 +501,12 @@ export async function executeUpdateCustomer(this: any, index: number): Promise<a
 	const busZip = this.getNodeParameter('bus_zip', index, '') as string;
 	const busStreet = this.getNodeParameter('bus_street', index, '') as string;
 	const busNo = this.getNodeParameter('bus_no', index, '') as string;
+	const homeCountry = this.getNodeParameter('home_country', index, '') as string;
+	const homeState = this.getNodeParameter('home_state', index, '') as string;
+	const homeCity = this.getNodeParameter('home_city', index, '') as string;
+	const homeZip = this.getNodeParameter('home_zip', index, '') as string;
+	const homeStreet = this.getNodeParameter('home_street', index, '') as string;
+	const homeNo = this.getNodeParameter('home_no', index, '') as string;
 	const bank = this.getNodeParameter('bank', index, '') as string;
 	const branch = this.getNodeParameter('branch', index, '') as string;
 	const account = this.getNodeParameter('account', index, '') as string;
@@ -443,8 +527,8 @@ export async function executeUpdateCustomer(this: any, index: number): Promise<a
 	// Add all fields if provided
 	if (name) body.client_name = name;
 	if (idNumber) {
-		body.client_hp = idNumber;
 		body.hp = idNumber;
+		body.vat_id = idNumber;
 	}
 	if (email) {
 		body.client_email = email;
@@ -473,6 +557,12 @@ export async function executeUpdateCustomer(this: any, index: number): Promise<a
 	if (busZip) body.bus_zip = busZip;
 	if (busStreet) body.bus_street = busStreet;
 	if (busNo) body.bus_no = busNo;
+	if (homeCountry) body.home_country = homeCountry;
+	if (homeState) body.home_state = homeState;
+	if (homeCity) body.home_city = homeCity;
+	if (homeZip) body.home_zip = homeZip;
+	if (homeStreet) body.home_street = homeStreet;
+	if (homeNo) body.home_no = homeNo;
 	if (bank) body.bank = bank;
 	if (branch) body.branch = branch;
 	if (account) body.account = account;
