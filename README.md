@@ -1,122 +1,122 @@
 # n8n-nodes-icount
 
-נוד קהילתי עבור n8n לעבודה עם מערכת iCount - מערכת הנהלת חשבונות ישראלית.
+Community node for n8n to work with iCount - Israeli accounting system.
 
-[n8n](https://n8n.io/) היא פלטפורמת אוטומציה עם [רישיון fair-code](https://docs.n8n.io/reference/license/).
+[n8n](https://n8n.io/) is an automation platform with [fair-code license](https://docs.n8n.io/reference/license/).
 
-## התקנה
+## Installation
 
-1. פתח את n8n
-2. עבור להגדרות (Settings) → Community Nodes
-3. לחץ על "Install a community node"
-4. הזן: `n8n-nodes-icount`
-5. לחץ על Install
+1. Open n8n
+2. Go to Settings → Community Nodes
+3. Click "Install a community node"
+4. Enter: `n8n-nodes-icount`
+5. Click Install
 
-או עקוב אחר [מדריך ההתקנה](https://docs.n8n.io/integrations/community-nodes/installation/) במסמכי n8n.
+Or follow the [installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) in the n8n documentation.
 
-## הגדרת Credentials (אישורי גישה)
+## Credentials Setup
 
-לפני שתתחיל, תצטרך ליצור API Token ב-iCount:
+Before you start, you'll need to create an API Token in iCount:
 
-1. היכנס ל-iCount
-2. עבור להגדרות → API
-3. צור API Token חדש
-4. העתק את ה-Token
+1. Log in to iCount
+2. Go to Settings → API
+3. Create a new API Token
+4. Copy the Token
 
-### יצירת Credentials ב-n8n
+### Creating Credentials in n8n
 
-1. פתח את עורך ה-workflow
-2. הוסף נוד iCount
-3. לחץ על "Credential to connect with"
-4. לחץ על "+ Create New"
-5. הזן את ה-API Token שלך
-6. שמור
+1. Open the workflow editor
+2. Add an iCount node
+3. Click "Credential to connect with"
+4. Click "+ Create New"
+5. Enter your API Token
+6. Save
 
-**שים לב:** יש להשתמש ב-API Token ולא ב-cid/user/pass!
-
----
-
-## משאבים (Resources)
-
-### 📄 Document (מסמכים)
-
-ניהול מסמכים חשבונאיים - חשבוניות, קבלות, הצעות מחיר ועוד.
-
-### 👥 Customer (לקוחות)
-
-ניהול לקוחות - יצירה, עדכון, שליפה ורשימות.
+**Note:** You must use an API Token, not cid/user/pass!
 
 ---
 
-## פעולות Document (מסמכים)
+## Resources
 
-### 1. Create - יצירת מסמך חדש
+### 📄 Document
 
-**מתי להשתמש:** כשאתה רוצה ליצור חשבונית, קבלה, הצעת מחיר או מסמך אחר.
+Manage accounting documents - invoices, receipts, quotes, and more.
 
-**שדות חובה:**
-- **Document Type (סוג מסמך):** נטען דינמית מה-API - בחר מתוך הרשימה המתעדכנת
-  - כולל: חשבונית מס, חשבונית מס קבלה, קבלה, הזמנה, הצעת מחיר, תעודת משלוח ועוד
+### 👥 Customer
 
-- **Client Name (שם לקוח):** שם מלא של הלקוח
+Manage customers - create, update, retrieve, and list.
 
-**שדות אופציונליים חשובים:**
-- **Client ID:** מזהה לקוח קיים במערכת
-- **Email:** כתובת מייל לשליחת המסמך
-- **VAT ID (ח.פ):** מספר עוסק מורשה
-- **Phone:** טלפון
-- **Address:** כתובת
+---
 
-**Items (פריטים):**
-- **Description:** תיאור הפריט
-- **Quantity:** כמות
-- **Unit Price:** מחיר יחידה
-- **VAT (מע"מ):** אחוז מע"מ (ברירת מחדל: 17)
+## Document Operations
 
-**דוגמה:**
+### 1. Create - Create New Document
+
+**When to use:** When you want to create an invoice, receipt, quote, or other document.
+
+**Required Fields:**
+- **Document Type:** Loaded dynamically from the API - select from the updated list
+  - Includes: Tax Invoice, Tax Invoice Receipt, Receipt, Order, Quote, Delivery Note, and more
+
+- **Client Name:** Full name of the client
+
+**Important Optional Fields:**
+- **Client ID:** Existing client ID in the system
+- **Email:** Email address to send the document
+- **VAT ID:** Tax ID number
+- **Phone:** Phone number
+- **Address:** Address
+
+**Items:**
+- **Description:** Item description
+- **Quantity:** Quantity
+- **Unit Price:** Unit price
+- **VAT:** VAT percentage (default: 17)
+
+**Example:**
 ```
 Document Type: invoice
-Client Name: עמית כהן
-Email: amit@example.com
+Client Name: John Doe
+Email: john@example.com
 VAT ID: 123456789
 Items:
-  - Description: שירותי ייעוץ
+  - Description: Consulting Services
     Quantity: 10
     Unit Price: 500
     VAT: 17
 ```
 
-**פלט:**
-- `doc_id` - מזהה המסמך (UUID)
-- `doc_number` - מספר המסמך
-- `pdf_link` - קישור להורדת PDF
+**Output:**
+- `doc_id` - Document ID (UUID)
+- `doc_number` - Document number
+- `pdf_link` - PDF download link
 
 ---
 
-### 2. Convert - המרת מסמך
+### 2. Convert - Convert Document
 
-**מתי להשתמש:** כשאתה רוצה להמיר מסמך מסוג אחד לסוג אחר (למשל, הצעת מחיר להזמנה).
+**When to use:** When you want to convert a document from one type to another (e.g., quote to order).
 
-**שדות חובה:**
-- **Document Type:** סוג המסמך הנוכחי (נטען דינמית מה-API)
-- **Document Number:** מספר המסמך להמרה
+**Required Fields:**
+- **Document Type:** Current document type (loaded dynamically from API)
+- **Document Number:** Document number to convert
 
-**שדות:**
+**Fields:**
 - **Get Conversion Options:**
-  - `ON` (ברירת מחדל) - מחזיר את רשימת אפשרויות ההמרה האפשריות
-  - `OFF` - מבצע המרה (צריך לספק Conversion Type)
-- **Conversion Type:** סוג ההמרה (רק כאשר Get Conversion Options כבוי)
+  - `ON` (default) - Returns list of available conversion options
+  - `OFF` - Performs conversion (requires Conversion Type)
+- **Conversion Type:** Type of conversion (only when Get Conversion Options is off)
 
-**דוגמה - קבלת אפשרויות:**
+**Example - Get Options:**
 ```
-Document Type: 300 (הצעת מחיר)
+Document Type: 300 (Quote)
 Document Number: 1001
 Get Conversion Options: ON
 ```
 
-**דוגמה - ביצוע המרה:**
+**Example - Perform Conversion:**
 ```
-Document Type: 300 (הצעת מחיר)
+Document Type: 300 (Quote)
 Document Number: 1001
 Get Conversion Options: OFF
 Conversion Type: order
@@ -124,67 +124,67 @@ Conversion Type: order
 
 ---
 
-### 3. Update Income Type - עדכון סוג הכנסה למסמך
+### 3. Update Income Type - Update Document Income Type
 
-**מתי להשתמש:** כשאתה רוצה לשנות את סוג ההכנסה המיוחס למסמך (לצורכי דיווח).
+**When to use:** When you want to change the income type assigned to a document (for reporting purposes).
 
-**שדות חובה:**
-- **Document Type:** סוג המסמך (נטען דינמית מה-API)
-- **Document Number:** מספר המסמך
+**Required Fields:**
+- **Document Type:** Document type (loaded dynamically from API)
+- **Document Number:** Document number
 
-**שדות:**
-- **Income Type:** בחירה בין ID או Name
-  - `Income Type ID` - מזהה מספרי של סוג ההכנסה
-  - `Income Type Name` - שם סוג ההכנסה (אם לא קיים, יווצר אוטומטית)
+**Fields:**
+- **Income Type:** Choose between ID or Name
+  - `Income Type ID` - Numeric ID of the income type
+  - `Income Type Name` - Name of income type (will be created automatically if doesn't exist)
 
-**דוגמה:**
+**Example:**
 ```
-Document Type: 320 (חשבונית מס)
+Document Type: 320 (Tax Invoice)
 Document Number: 2007
 Income Type: Income Type Name
-Income Type Name: ייעוץ טכני
+Income Type Name: Technical Consulting
 ```
 
 ---
 
-### 4. Cancel - ביטול מסמך
+### 4. Cancel - Cancel Document
 
-**מתי להשתמש:** כשאתה רוצה לבטל מסמך (ייווצר מסמך ביטול במערכת).
+**When to use:** When you want to cancel a document (creates a cancellation document in the system).
 
-**שדות חובה:**
-- **Document Type:** סוג המסמך
-- **Document Number:** מספר המסמך לביטול
+**Required Fields:**
+- **Document Type:** Document type
+- **Document Number:** Document number to cancel
 
-**שדות אופציונליים:**
-- **Refund Credit Card (זיכוי כרטיס אשראי):**
-  - `OFF` (כבוי) - רק ביטול המסמך
-  - `ON` (דלוק) - גם ביטול עסקת אשראי אם קיימת
-- **Cancellation Reason:** סיבת הביטול
+**Optional Fields:**
+- **Refund Credit Card:**
+  - `OFF` - Only cancel the document
+  - `ON` - Also refund credit card transaction if exists
+- **Cancellation Reason:** Reason for cancellation
 
-**דוגמה:**
+**Example:**
 ```
 Document Type: invoice
 Document Number: 2007
 Refund Credit Card: OFF
-Cancellation Reason: הלקוח ביקש לבטל
+Cancellation Reason: Customer requested cancellation
 ```
 
-**חשוב:** אם Refund Credit Card מסומן, המערכת תנסה לבטל גם את עסקת כרטיס האשראי. אם אין עסקה - תקבל שגיאה.
+**Important:** If Refund Credit Card is checked, the system will try to cancel the credit card transaction. If no transaction exists - you'll get an error.
 
 ---
 
-### 5. Close - סגירת מסמך
+### 5. Close - Close Document
 
-**מתי להשתמש:** כשאתה רוצה לסגור מסמך (למשל, לסמן הזמנה כ"הושלמה").
+**When to use:** When you want to close a document (e.g., mark an order as "completed").
 
-**שדות חובה:**
-- **Document Type:** סוג המסמך
-- **Document Number:** מספר המסמך
+**Required Fields:**
+- **Document Type:** Document type
+- **Document Number:** Document number
 
-**שדות אופציונליים:**
-- **Based On Documents:** רשימת מסמכי בסיס (JSON)
+**Optional Fields:**
+- **Based On Documents:** List of base documents (JSON)
 
-**דוגמה:**
+**Example:**
 ```
 Document Type: order
 Document Number: 1001
@@ -193,56 +193,56 @@ Based On Documents: [{"doctype": "offer", "docnum": 500}]
 
 ---
 
-### 6. Get - קבלת מסמך ספציפי
+### 6. Get - Get Specific Document
 
-**מתי להשתמש:** כשאתה רוצה לקבל את כל הפרטים של מסמך מסוים.
+**When to use:** When you want to retrieve all details of a specific document.
 
-**שדות חובה:**
-- **Document Type:** סוג המסמך
-- **Document Number:** מספר המסמך
+**Required Fields:**
+- **Document Type:** Document type
+- **Document Number:** Document number
 
-**דוגמה:**
+**Example:**
 ```
 Document Type: invoice
 Document Number: 2007
 ```
 
-**פלט:**
-- כל פרטי המסמך
-- פרטי לקוח
-- פריטים
-- מחירים וסכומים
-- קישור ל-PDF
+**Output:**
+- All document details
+- Client information
+- Items
+- Prices and totals
+- PDF link
 
 ---
 
-### 7. Search - חיפוש מסמכים
+### 7. Search - Search Documents
 
-**מתי להשתמש:** כשאתה רוצה למצוא מסמכים לפי קריטריונים שונים.
+**When to use:** When you want to find documents by various criteria.
 
-**שדות:**
-- **Return All:** האם להחזיר את כל התוצאות (עד 1000)
-- **Max Results:** מספר מקסימלי של תוצאות (אם Return All כבוי)
-- **Detail Level:** רמת פירוט (0-10)
-  - `0` - בסיסי (doctype + docnum)
-  - `1` - סטנדרטי (+ תאריך, לקוח, סכום)
-  - `10` - מלא (הכל)
+**Fields:**
+- **Return All:** Whether to return all results (up to 1000)
+- **Max Results:** Maximum number of results (if Return All is off)
+- **Detail Level:** Detail level (0-10)
+  - `0` - Basic (doctype + docnum)
+  - `1` - Standard (+ date, client, amount)
+  - `10` - Complete (everything)
 
-**פילטרים:**
-- **Client ID:** חיפוש לפי מזהה לקוח
-- **Client Name:** חיפוש לפי שם לקוח
-- **Email:** חיפוש לפי מייל
-- **Document Type:** סינון לפי סוג מסמך
-- **Document Number:** מספר מסמך ספציפי
+**Filters:**
+- **Client ID:** Search by client ID
+- **Client Name:** Search by client name
+- **Email:** Search by email
+- **Document Type:** Filter by document type
+- **Document Number:** Specific document number
 - **Document Status:**
-  - `0` - פתוח
-  - `1` - סגור
-  - `2` - סגור חלקית
-- **Start Date / End Date:** טווח תאריכים
-- **Sort Field:** שדה למיון (תאריך, מספר, שם לקוח)
-- **Sort Order:** סדר מיון (ASC / DESC)
+  - `0` - Open
+  - `1` - Closed
+  - `2` - Partially closed
+- **Start Date / End Date:** Date range
+- **Sort Field:** Field to sort by (date, number, client name)
+- **Sort Order:** Sort order (ASC / DESC)
 
-**דוגמה - חיפוש חשבוניות של לקוח:**
+**Example - Search client invoices:**
 ```
 Return All: true
 Detail Level: Complete (Everything)
@@ -250,25 +250,25 @@ Filters:
   Client ID: 2
   Document Type: invoice
   Start Date: 2025-01-01
-  Sort Field: תאריך הנפקה
+  Sort Field: Issue Date
   Sort Order: DESC
 ```
 
 ---
 
-### 8. List - רשימת מסמכים
+### 8. List - List Documents
 
-**מתי להשתמש:** כשאתה רוצה לקבל רשימה של כל המסמכים (ללא פילטרים).
+**When to use:** When you want to get a list of all documents (without filters).
 
-**שדות:**
-- **Return All:** האם להחזיר הכל
-- **Limit:** מספר מקסימלי של תוצאות
+**Fields:**
+- **Return All:** Whether to return everything
+- **Limit:** Maximum number of results
 - **Additional Fields:**
   - **Combine All Items:**
-    - `OFF` (ברירת מחדל) - כל מסמך כ-item נפרד
-    - `ON` - כל המסמכים באייטם אחד
+    - `OFF` (default) - Each document as a separate item
+    - `ON` - All documents in one item
 
-**דוגמה:**
+**Example:**
 ```
 Return All: false
 Limit: 50
@@ -278,291 +278,291 @@ Additional Fields:
 
 ---
 
-### 9. Get Document URL - קבלת קישור למסמך
+### 9. Get Document URL - Get Document Link
 
-**מתי להשתמש:** כשאתה רוצה לקבל קישור לצפייה במסמך (PDF) ללא הורדה.
+**When to use:** When you want to get a link to view the document (PDF) without downloading.
 
-**שדות חובה:**
-- **Document Type:** סוג המסמך
-- **Document Number:** מספר המסמך
+**Required Fields:**
+- **Document Type:** Document type
+- **Document Number:** Document number
 
-**שדות אופציונליים:**
-- **Language:** שפה (עברית/אנגלית)
-- **Original Document:** מקור או עותק
-- **Hide ILS Prices:** להסתיר מחירי שקלים (למסמכים במטבע זר)
-- **Document Language:** שפת המסמך (עוקפת את שפת ה-API)
-- **Email To:** מייל למעקב
+**Optional Fields:**
+- **Language:** Language (Hebrew/English)
+- **Original Document:** Original or copy
+- **Hide ILS Prices:** Hide ILS prices (for foreign currency documents)
+- **Document Language:** Document language (overrides API language)
+- **Email To:** Email for tracking
 
-**דוגמה:**
+**Example:**
 ```
 Document Type: invoice
 Document Number: 2007
-Language: עברית
+Language: Hebrew
 Original Document: true
 ```
 
-**פלט:**
-- `url` - קישור ישיר למסמך PDF
+**Output:**
+- `url` - Direct link to PDF document
 
 ---
 
-## פעולות Customer (לקוחות)
+## Customer Operations
 
-### 1. Create - יצירת לקוח חדש
+### 1. Create - Create New Customer
 
-**מתי להשתמש:** כשאתה רוצה ליצור לקוח חדש במערכת.
+**When to use:** When you want to create a new customer in the system.
 
-**שדות חובה:**
-- **Client Name:** שם הלקוח
+**Required Fields:**
+- **Client Name:** Customer name
 
-**שדות אופציונליים:**
-- **Email:** מייל
-- **Phone:** טלפון
-- **Mobile:** נייד
-- **HP Number (ח.פ/ת.ז):** מספר ח.פ או ת.ז (נשמר בשדה `vat_id`)
-- **Client Type:** סוג לקוח (נטען דינמית מה-API)
-- **Bank:** בנק (נטען דינמית מה-API)
-- **Employee Assigned:** עובד מטפל (נטען דינמית מה-API)
-- **Address, City, Zip:** כתובת מלאה
-- **Home Address Fields:** כתובת מגורים מלאה
-- **Payment Terms:** תנאי תשלום (בימים)
+**Optional Fields:**
+- **Email:** Email
+- **Phone:** Phone
+- **Mobile:** Mobile
+- **HP Number (Tax ID):** Tax ID or personal ID number (saved in `vat_id` field)
+- **Client Type:** Client type (loaded dynamically from API)
+- **Bank:** Bank (loaded dynamically from API)
+- **Employee Assigned:** Assigned employee (loaded dynamically from API)
+- **Address, City, Zip:** Full address
+- **Home Address Fields:** Full residential address
+- **Payment Terms:** Payment terms (in days)
 
-**דוגמה:**
+**Example:**
 ```
-Client Name: חברת הדוגמה בע"מ
-Email: info@example.co.il
+Client Name: Example Company Ltd.
+Email: info@example.com
 Phone: 03-1234567
 Mobile: 050-1234567
 HP Number: 123456789
-Client Type: חברה
-Bank: בנק לאומי
-City: תל אביב
+Client Type: Company
+Bank: Bank Leumi
+City: Tel Aviv
 Payment Terms: 30
 ```
 
 ---
 
-### 2. Update - עדכון לקוח קיים
+### 2. Update - Update Existing Customer
 
-**מתי להשתמש:** כשאתה רוצה לעדכן פרטי לקוח קיים.
+**When to use:** When you want to update details of an existing customer.
 
-**שדות חובה:**
-- **Client ID:** מזהה הלקוח
+**Required Fields:**
+- **Client ID:** Customer ID
 
-**שדות לעדכון:**
-- כל השדות זמינים לעדכון (Email, Phone, Address, וכו')
+**Fields to Update:**
+- All fields are available for update (Email, Phone, Address, etc.)
 
-**דוגמה:**
+**Example:**
 ```
 Client ID: 123
-Email: new-email@example.co.il
+Email: new-email@example.com
 Phone: 03-9999999
 ```
 
 ---
 
-### 3. Upsert - יצירה או עדכון לקוח
+### 3. Upsert - Create or Update Customer
 
-**מתי להשתמש:** כשאתה רוצה להוסיף לקוח חדש או לעדכן קיים.
+**When to use:** When you want to add a new customer or update an existing one.
 
-**איך זה עובד:**
-- המערכת מחפשת לקוח לפי ח.פ או מייל
-- אם נמצא - מעדכנת
-- אם לא - יוצרת חדש
+**How it works:**
+- The system searches for a customer by Tax ID or email
+- If found - updates
+- If not - creates new
 
-**שדות חובה:**
-- **Client Name:** שם הלקוח
+**Required Fields:**
+- **Client Name:** Customer name
 
-**שדות אופציונליים:**
-- **Email:** מייל
-- **Phone:** טלפון
-- **Mobile:** נייד
-- **VAT ID (ח.פ):** מספר עוסק
-- **Address, City, Zip:** כתובת מלאה
-- **Payment Terms:** תנאי תשלום (בימים)
+**Optional Fields:**
+- **Email:** Email
+- **Phone:** Phone
+- **Mobile:** Mobile
+- **VAT ID:** Tax ID
+- **Address, City, Zip:** Full address
+- **Payment Terms:** Payment terms (in days)
 
-**דוגמה:**
+**Example:**
 ```
-Client Name: חברת הדוגמה בע"מ
-Email: info@example.co.il
+Client Name: Example Company Ltd.
+Email: info@example.com
 Phone: 03-1234567
 Mobile: 050-1234567
 VAT ID: 123456789
-Address: רחוב הדוגמה 1
-City: תל אביב
+Address: Example Street 1
+City: Tel Aviv
 Zip: 12345
 Payment Terms: 30
 ```
 
-**פלט:**
-- `client_id` - מזהה הלקוח במערכת
-- כל פרטי הלקוח
+**Output:**
+- `client_id` - Customer ID in the system
+- All customer details
 
 ---
 
-### 4. Get - קבלת לקוח לפי מזהה
+### 4. Get - Get Customer by ID
 
-**מתי להשתמש:** כשיש לך מזהה לקוח ואתה רוצה לקבל את כל הפרטים שלו.
+**When to use:** When you have a customer ID and want to get all their details.
 
-**שדות חובה:**
-- **Client ID:** מזהה הלקוח
+**Required Fields:**
+- **Client ID:** Customer ID
 
-**דוגמה:**
+**Example:**
 ```
 Client ID: 2
 ```
 
-**פלט:**
-- כל פרטי הלקוח
-- היסטוריית פעילות
-- מסמכים פתוחים
+**Output:**
+- All customer details
+- Activity history
+- Open documents
 
 ---
 
-### 5. Delete - מחיקת לקוח
+### 5. Delete - Delete Customer
 
-**מתי להשתמש:** כשאתה רוצה למחוק לקוח מהמערכת.
+**When to use:** When you want to delete a customer from the system.
 
-**שדות חובה:**
-- **Client ID:** מזהה הלקוח למחיקה
+**Required Fields:**
+- **Client ID:** Customer ID to delete
 
-**דוגמה:**
+**Example:**
 ```
 Client ID: 123
 ```
 
 ---
 
-### 6. List - רשימת לקוחות
+### 6. List - List Customers
 
-**מתי להשתמש:** כשאתה רוצה לקבל רשימה של כל הלקוחות במערכת.
+**When to use:** When you want to get a list of all customers in the system.
 
-**שדות:**
-- **Return All:** האם להחזיר את כל הלקוחות
-- **Limit:** מספר מקסימלי (אם Return All כבוי)
+**Fields:**
+- **Return All:** Whether to return all customers
+- **Limit:** Maximum number (if Return All is off)
 - **Additional Fields:**
   - **Combine All Items:**
-    - `OFF` (ברירת מחדל) - כל לקוח כ-item נפרד
-    - `ON` - כל הלקוחות באייטם אחד
+    - `OFF` (default) - Each customer as a separate item
+    - `ON` - All customers in one item
 
-**דוגמה:**
+**Example:**
 ```
 Return All: true
 Additional Fields:
   Combine All Items: OFF
 ```
 
-**פלט:**
-- מערך של כל הלקוחות עם כל הפרטים
+**Output:**
+- Array of all customers with all details
 
 ---
 
-### 7. Get Open Docs - קבלת מסמכים פתוחים ללקוחות
+### 7. Get Open Docs - Get Open Documents for Customers
 
-**מתי להשתמש:** כשאתה רוצה לראות אילו לקוחות יש להם מסמכים פתוחים (חובות).
+**When to use:** When you want to see which customers have open documents (debts).
 
-**שדות אופציונליים:**
-- **Client ID:** לסנן לקוח ספציפי
+**Optional Fields:**
+- **Client ID:** Filter specific customer
 - **Options:**
-  - **Document Type:** סוג מסמך ספציפי
-  - **Get Items:** לכלול גם פרטי פריטים
-  - **Email:** סינון לפי מייל
-  - **Client Name:** סינון לפי שם
+  - **Document Type:** Specific document type
+  - **Get Items:** Include item details too
+  - **Email:** Filter by email
+  - **Client Name:** Filter by name
 
-**דוגמה - כל המסמכים הפתוחים:**
+**Example - All open documents:**
 ```
-(השאר ריק לקבלת הכל)
+(Leave empty to get all)
 ```
 
-**דוגמה - מסמכים פתוחים של לקוח ספציפי:**
+**Example - Open documents for specific customer:**
 ```
 Client ID: 2
 Options:
   Get Items: true
 ```
 
-**פלט:**
-- רשימת מסמכים פתוחים
-- סכומים לתשלום
-- פרטי לקוחות
+**Output:**
+- List of open documents
+- Amounts due
+- Customer details
 
 ---
 
-### 8. Get Contacts - קבלת אנשי קשר של לקוח
+### 8. Get Contacts - Get Customer Contacts
 
-**מתי להשתמש:** כשאתה רוצה לקבל רשימת אנשי קשר של לקוח ספציפי.
+**When to use:** When you want to get a list of contacts for a specific customer.
 
-**שדות חובה:**
-- **Client ID:** מזהה הלקוח
+**Required Fields:**
+- **Client ID:** Customer ID
 
-**דוגמה:**
+**Example:**
 ```
 Client ID: 123
 ```
 
-**פלט:**
-- רשימת אנשי קשר עם כל הפרטים
+**Output:**
+- List of contacts with all details
 
 ---
 
-### 9. Add Contact - הוספת איש קשר ללקוח
+### 9. Add Contact - Add Contact to Customer
 
-**מתי להשתמש:** כשאתה רוצה להוסיף איש קשר חדש ללקוח קיים.
+**When to use:** When you want to add a new contact to an existing customer.
 
-**שדות חובה:**
-- **Client ID:** מזהה הלקוח
-- **Contact Name:** שם איש הקשר
+**Required Fields:**
+- **Client ID:** Customer ID
+- **Contact Name:** Contact name
 
-**שדות אופציונליים:**
-- **Contact Type:** סוג איש הקשר (נטען דינמית מה-API)
-- **Email:** מייל
-- **Phone:** טלפון
-- **Mobile:** נייד
-- **Notes:** הערות
+**Optional Fields:**
+- **Contact Type:** Contact type (loaded dynamically from API)
+- **Email:** Email
+- **Phone:** Phone
+- **Mobile:** Mobile
+- **Notes:** Notes
 
-**דוגמה:**
+**Example:**
 ```
 Client ID: 123
-Contact Name: יוסי כהן
-Contact Type: איש קשר ראשי
-Email: yossi@example.com
+Contact Name: John Smith
+Contact Type: Primary Contact
+Email: john@example.com
 Phone: 03-1234567
 ```
 
 ---
 
-### 10. Update Contact - עדכון איש קשר
+### 10. Update Contact - Update Contact
 
-**מתי להשתמש:** כשאתה רוצה לעדכן פרטי איש קשר קיים.
+**When to use:** When you want to update details of an existing contact.
 
-**שדות חובה:**
-- **Client ID:** מזהה הלקוח
-- **Contact ID:** מזהה איש הקשר
+**Required Fields:**
+- **Client ID:** Customer ID
+- **Contact ID:** Contact ID
 
-**שדות לעדכון:**
-- **Contact Name:** שם חדש
-- **Contact Type:** סוג חדש (נטען דינמית מה-API)
-- **Email, Phone, Mobile:** פרטי קשר מעודכנים
+**Fields to Update:**
+- **Contact Name:** New name
+- **Contact Type:** New type (loaded dynamically from API)
+- **Email, Phone, Mobile:** Updated contact details
 
-**דוגמה:**
+**Example:**
 ```
 Client ID: 123
 Contact ID: 456
-Contact Name: יוסי כהן (עודכן)
-Email: yossi.new@example.com
+Contact Name: John Smith (Updated)
+Email: john.new@example.com
 ```
 
 ---
 
-### 11. Delete Contact - מחיקת איש קשר
+### 11. Delete Contact - Delete Contact
 
-**מתי להשתמש:** כשאתה רוצה למחוק איש קשר מלקוח.
+**When to use:** When you want to delete a contact from a customer.
 
-**שדות חובה:**
-- **Client ID:** מזהה הלקוח
-- **Contact ID:** מזהה איש הקשר למחיקה
+**Required Fields:**
+- **Client ID:** Customer ID
+- **Contact ID:** Contact ID to delete
 
-**דוגמה:**
+**Example:**
 ```
 Client ID: 123
 Contact ID: 456
@@ -570,28 +570,28 @@ Contact ID: 456
 
 ---
 
-## תכונות מיוחדות
+## Special Features
 
-### Dynamic Dropdowns (רשימות דינמיות)
+### Dynamic Dropdowns
 
-הנוד תומך ב-dropdowns שנטענים אוטומטית מה-API של iCount:
+The node supports dropdowns that load automatically from the iCount API:
 
-- **Document Type (סוג מסמך)** - בנודים: Create, Convert, Update Income Type
-- **Bank (בנק)** - בנודים: Create Customer, Update Customer, Upsert Customer
-- **Employee Assigned (עובד מטפל)** - בנודים: Create Customer, Update Customer, Upsert Customer
-- **Client Type (סוג לקוח)** - בנודים: Create Customer, Update Customer, Upsert Customer
-- **Contact Type (סוג איש קשר)** - בנודים: Add Contact, Update Contact
+- **Document Type** - In nodes: Create, Convert, Update Income Type
+- **Bank** - In nodes: Create Customer, Update Customer, Upsert Customer
+- **Employee Assigned** - In nodes: Create Customer, Update Customer, Upsert Customer
+- **Client Type** - In nodes: Create Customer, Update Customer, Upsert Customer
+- **Contact Type** - In nodes: Add Contact, Update Contact
 
-כל הרשימות מתעדכנות אוטומטית בהתאם למה שמוגדר במערכת iCount שלך.
+All lists update automatically based on what's configured in your iCount system.
 
 ---
 
-## דוגמאות Workflow מלאות
+## Complete Workflow Examples
 
-### דוגמה 1: יצירת חשבונית מ-Webhook
+### Example 1: Create Invoice from Webhook
 
 ```
-1. Webhook (קבלת הזמנה)
+1. Webhook (receive order)
    ↓
 2. iCount - Upsert Customer
    - Client Name: {{ $json.customer_name }}
@@ -609,31 +609,31 @@ Contact ID: 456
    ↓
 4. Send Email
    - To: {{ $json.customer_email }}
-   - Subject: חשבונית מספר {{ $('iCount1').item.json.doc_number }}
-   - Body: קישור למסמך: {{ $('iCount1').item.json.pdf_link }}
+   - Subject: Invoice #{{ $('iCount1').item.json.doc_number }}
+   - Body: Document link: {{ $('iCount1').item.json.pdf_link }}
 ```
 
 ---
 
-### דוגמה 2: דוח יומי של מסמכים פתוחים
+### Example 2: Daily Report of Open Documents
 
 ```
-1. Schedule Trigger (כל יום בבוקר)
+1. Schedule Trigger (every morning)
    ↓
 2. iCount - Get Open Docs
    - Return All: true
    ↓
-3. Filter (רק חובות מעל 30 יום)
+3. Filter (only debts over 30 days)
    ↓
-4. Send Email (דוח למנהל)
+4. Send Email (report to manager)
 ```
 
 ---
 
-### דוגמה 3: סנכרון לקוחות מ-CRM
+### Example 3: Sync Customers from CRM
 
 ```
-1. HTTP Request (קבלת לקוחות מ-CRM)
+1. HTTP Request (get customers from CRM)
    ↓
 2. Loop Over Items
    ↓
@@ -643,72 +643,72 @@ Contact ID: 456
    - Phone: {{ $json.phone }}
    - VAT ID: {{ $json.vat_id }}
    ↓
-4. Set (שמירת מזהים)
+4. Set (save IDs)
 ```
 
 ---
 
-### דוגמה 4: חיפוש וביטול חשבוניות
+### Example 4: Search and Cancel Invoices
 
 ```
 1. iCount - Search Documents
    - Document Type: invoice
    - Client ID: 2
-   - Document Status: פתוח
+   - Document Status: Open
    ↓
-2. Filter (לפי קריטריון מסוים)
+2. Filter (by specific criteria)
    ↓
 3. iCount - Cancel
    - Document Type: invoice
    - Document Number: {{ $json.docnum }}
-   - Cancellation Reason: ביטול אוטומטי
+   - Cancellation Reason: Automatic cancellation
 ```
 
 ---
 
-## שגיאות נפוצות ופתרונות
+## Common Errors and Solutions
 
-### שגיאה: "auth_required"
-**פתרון:** ודא שה-API Token נכון ונוצר ב-iCount.
+### Error: "auth_required"
+**Solution:** Verify that the API Token is correct and created in iCount.
 
-### שגיאה: "bad_doctype"
-**פתרון:** השתמש בערכים הנכונים: invoice, invrec, receipt, refund, order, offer, delivery, deal
+### Error: "bad_doctype"
+**Solution:** Use the correct values: invoice, invrec, receipt, refund, order, offer, delivery, deal
 
-### שגיאה: "missing_client_name"
-**פתרון:** חובה למלא שם לקוח בעת יצירת מסמך.
+### Error: "missing_client_name"
+**Solution:** Client name is required when creating a document.
 
-### שגיאה: "doc_not_found"
-**פתרון:** ודא שמספר המסמך וסוג המסמך נכונים.
+### Error: "doc_not_found"
+**Solution:** Verify that the document number and document type are correct.
 
-### רשימת לקוחות/מסמכים ריקה
-**פתרון:** בדוק את ה-debug output בתגובה, ייתכן שהתשובה ממוקמת בשדה אחר.
+### Empty customer/document list
+**Solution:** Check the debug output in the response, the response might be in a different field.
 
 ---
 
-## טיפים וטריקים
+## Tips and Tricks
 
-### שימוש ב-Expressions
+### Using Expressions
 ```javascript
-// שימוש בתאריך נוכחי
+// Use current date
 {{ $now.format('yyyy-MM-dd') }}
 
-// חישוב סכום כולל
+// Calculate total
 {{ $json.quantity * $json.price * 1.17 }}
 
-// שרשור טקסט
-{{ "חשבונית ללקוח " + $json.client_name }}
+// String concatenation
+{{ "Invoice for customer " + $json.client_name }}
 ```
 
-### Loop על פריטים
-אם יש לך כמה פריטים, השתמש ב-Loop:
+### Loop Over Items
+If you have multiple items, use a Loop:
 ```
-1. Set (הכן מערך פריטים)
+1. Set (prepare items array)
 2. Loop Over Items
-3. iCount - Create Document (פריט אחד בכל פעם)
+3. iCount - Create Document (one item at a time)
 ```
 
-### שמירת תוצאות
-השתמש ב-Set node לשמירת מזהים:
+### Save Results
+Use a Set node to save IDs:
 ```javascript
 {
   "invoice_id": "{{ $('iCount').item.json.doc_id }}",
@@ -719,56 +719,66 @@ Contact ID: 456
 
 ---
 
-## משאבים נוספים
+## Additional Resources
 
-- [תיעוד API של iCount](https://apiv3.icount.co.il/docs)
-- [תיעוד n8n](https://docs.n8n.io/)
-- [דוגמאות Workflows](https://n8n.io/workflows)
+- [iCount API Documentation](https://apiv3.icount.co.il/docs)
+- [n8n Documentation](https://docs.n8n.io/)
+- [Workflow Examples](https://n8n.io/workflows)
 
-## תמיכה
+## Support
 
-לבעיות ושאלות:
-- [פתח issue ב-GitHub](https://github.com/binesamit/n8n-nodes-icount/issues)
-- [קהילת n8n](https://community.n8n.io/)
+For issues and questions:
+- [Open an issue on GitHub](https://github.com/binesamit/n8n-nodes-icount/issues)
+- [n8n Community](https://community.n8n.io/)
 
-## רישיון
+## License
 
 MIT
 
 ---
 
-**גרסה נוכחית:** 1.0.51
+**Current Version:** 1.0.54
 
-**עדכון אחרון:** ינואר 2025
+**Last Updated:** January 2025
 
-## היסטוריית גרסאות
+## Version History
 
-### v1.0.51 (אחרון)
-- ✅ תיקון Document Types dropdown - קריאה נכונה מהשדה `doctypes`
-- ✅ הוספת dynamic dropdowns ל-Convert Document ו-Update Income Type
+### v1.0.54 (latest)
+- ✅ Restructured project - moved all files to root directory
+- ✅ Improved standard npm package layout
+
+### v1.0.53
+- ✅ Updated repository URL
+
+### v1.0.52
+- ✅ Updated comprehensive README with all features and operations
+
+### v1.0.51
+- ✅ Fixed Document Types dropdown - correct reading from `doctypes` field
+- ✅ Added dynamic dropdowns to Convert Document and Update Income Type
 
 ### v1.0.50
-- ✅ הוספת dynamic dropdown לסוגי מסמכים (Document Types)
-- ✅ הוספת נוד Convert Document - המרת מסמכים
-- ✅ הוספת נוד Update Income Type - עדכון סוג הכנסה
-- ✅ הסרת נוד Update Document (לא עובד ב-API)
+- ✅ Added dynamic dropdown for Document Types
+- ✅ Added Convert Document node - document conversion
+- ✅ Added Update Income Type node - update income type
+- ✅ Removed Update Document node (doesn't work in API)
 
 ### v1.0.49
-- ✅ הוספת אפשרות Combine All Items ב-List operations
-- ✅ אפשרות לקבל כל הפריטים באייטם אחד או כל פריט בנפרד
+- ✅ Added Combine All Items option in List operations
+- ✅ Option to get all items in one item or each item separately
 
 ### v1.0.48
-- ✅ תיקון List operations להחזרת כל פריט בנפרד
-- ✅ טיפול נכון באובייקטים שמחזיר ה-API
+- ✅ Fixed List operations to return each item separately
+- ✅ Correct handling of objects returned by API
 
 ### v1.0.47
-- ✅ שחזור שדות Home Address ללקוחות
-- ✅ תיקון שמירת HP/VAT ID (שימוש ב-vat_id)
+- ✅ Restored Home Address fields for customers
+- ✅ Fixed HP/VAT ID saving (using vat_id)
 
 ### v1.0.42-45
-- ✅ הוספת dynamic dropdowns: Bank, Employee Assigned, Client Type, Contact Type
-- ✅ תיקון טיפול באובייקטים מה-API
+- ✅ Added dynamic dropdowns: Bank, Employee Assigned, Client Type, Contact Type
+- ✅ Fixed handling of objects from API
 
-### גרסאות קודמות
-- תמיכה בסיסית במסמכים ולקוחות
-- פעולות CRUD בסיסיות
+### Earlier Versions
+- Basic support for documents and customers
+- Basic CRUD operations
