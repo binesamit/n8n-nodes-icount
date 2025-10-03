@@ -726,7 +726,15 @@ Use a Set node to save IDs:
 
 ## Testing
 
-This project includes comprehensive testing infrastructure:
+This project includes comprehensive testing infrastructure with **309 passing tests** and **~90% code coverage**.
+
+### CI/CD & Automation
+
+**🔧 First Time Setup:** See [SETUP_TOKENS.md](SETUP_TOKENS.md) for Codecov and npm publishing configuration.
+
+- ✅ GitHub Actions - Automated testing on every push/PR
+- ✅ Codecov Integration - Automatic coverage reports
+- ✅ Automated npm Publishing - One-click releases
 
 ### Running Tests
 
