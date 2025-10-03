@@ -726,7 +726,7 @@ Use a Set node to save IDs:
 
 ## Testing
 
-This project includes comprehensive testing infrastructure with **309 passing tests** and **~90% code coverage**.
+This project includes comprehensive testing infrastructure with **330 passing tests** and **~90% code coverage**.
 
 ### CI/CD & Automation
 
@@ -752,6 +752,7 @@ npm run test:watch
 npm run test:unit
 npm run test:integration
 npm run test:e2e
+npm run test:performance
 ```
 
 ### Test Coverage
@@ -762,9 +763,11 @@ npm run test:e2e
 | Load Options | 107 | 100% ✅ |
 | Integration Tests | 149 | ~95% ✅ |
 | E2E Workflow Tests | 17 | ~90% ✅ |
-| Overall | **309** | ~90% ✅ |
+| Performance Tests | 21 | N/A |
+| Overall | **330** | ~90% ✅ |
 
 See [TESTING.md](TESTING.md) for detailed testing documentation.
+See [PERFORMANCE_TESTING.md](PERFORMANCE_TESTING.md) for performance testing guide.
 
 **Test Breakdown:**
 - ✅ Utils (36 tests): Idempotency (14) + API Request (22)
@@ -772,6 +775,7 @@ See [TESTING.md](TESTING.md) for detailed testing documentation.
 - ✅ Document Operations (54 tests): Create (16) + Search (18) + Cancel (20)
 - ✅ Customer Operations (95 tests): Create (29) + Update (30) + Delete (18) + Upsert (18)
 - ✅ E2E Workflows (17 tests): Customer Management (8) + Document Lifecycle (9)
+- ✅ Performance Tests (21 tests): Load Testing (8) + Stress Testing (6) + Rate Limit Testing (7)
 
 ---
 
