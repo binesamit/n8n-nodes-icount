@@ -1,5 +1,10 @@
 # n8n-nodes-icount
 
+[![npm version](https://badge.fury.io/js/n8n-nodes-icount.svg)](https://badge.fury.io/js/n8n-nodes-icount)
+[![Tests](https://github.com/binesamit/n8n-nodes-icount/actions/workflows/test.yml/badge.svg)](https://github.com/binesamit/n8n-nodes-icount/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/binesamit/n8n-nodes-icount/branch/master/graph/badge.svg)](https://codecov.io/gh/binesamit/n8n-nodes-icount)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Community node for n8n to work with iCount - Israeli accounting system.
 
 [n8n](https://n8n.io/) is an automation platform with [fair-code license](https://docs.n8n.io/reference/license/).
@@ -719,11 +724,55 @@ Use a Set node to save IDs:
 
 ---
 
+## Testing
+
+This project includes comprehensive testing infrastructure:
+
+### Running Tests
+
+```bash
+# Run all tests
+npm test
+
+# Run with coverage
+npm run test:coverage
+
+# Run in watch mode
+npm run test:watch
+
+# Run specific test suites
+npm run test:unit
+npm run test:integration
+npm run test:e2e
+```
+
+### Test Coverage
+
+| Component | Tests | Coverage |
+|-----------|-------|----------|
+| Utils | 36 | 100% ✅ |
+| Load Options | 107 | 100% ✅ |
+| Integration Tests | 149 | ~95% ✅ |
+| E2E Workflow Tests | 17 | ~90% ✅ |
+| Overall | **309** | ~90% ✅ |
+
+See [TESTING.md](TESTING.md) for detailed testing documentation.
+
+**Test Breakdown:**
+- ✅ Utils (36 tests): Idempotency (14) + API Request (22)
+- ✅ Load Options (107 tests): Banks (13) + Document Types (15) + Users (25) + Client Types (26) + Contact Types (28)
+- ✅ Document Operations (54 tests): Create (16) + Search (18) + Cancel (20)
+- ✅ Customer Operations (95 tests): Create (29) + Update (30) + Delete (18) + Upsert (18)
+- ✅ E2E Workflows (17 tests): Customer Management (8) + Document Lifecycle (9)
+
+---
+
 ## Additional Resources
 
 - [iCount API Documentation (official)](https://apiv3.icount.co.il/docs/iCount/)
 - [n8n Documentation](https://docs.n8n.io/)
 - [Workflow Examples](https://n8n.io/workflows)
+- [Testing Documentation](TESTING.md)
 
 ## Support
 
